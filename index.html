@@ -159,10 +159,8 @@
 </head>
 <body>
 
-    <!-- Layer Background Wallpaper -->
     <div id="bg-layer"></div>
 
-    <!-- Login Overlay -->
     <div id="login-overlay">
         <div class="login-box">
             <h2>LOGIN ADMIN</h2>
@@ -173,9 +171,7 @@
         </div>
     </div>
 
-    <!-- Layout Utama -->
     <div class="app-container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <h3>CATATAN DATA</h3>
@@ -192,14 +188,12 @@
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="main-content">
             <div class="header-bar">
                 <h2 class="page-title" id="page-title">Tabel Pemasukkan</h2>
                 <button class="btn btn-success" onclick="syncDataToCloud()">Simpan Ke Cloud (Online)</button>
             </div>
 
-            <!-- Panel Pengaturan Wallpaper Halaman Ini -->
             <div class="admin-controls">
                 <div class="control-group">
                     <label>Wallpaper Halaman Ini (Galeri):</label>
@@ -228,12 +222,9 @@
                 </div>
             </div>
 
-            <!-- Form Input Dynamic -->
             <div class="form-inline" id="form-container">
-                <!-- Form Dinamis JS -->
-            </div>
+                </div>
 
-            <!-- Table View Tembus Pandang -->
             <div style="overflow-x: auto;">
                 <table id="data-table">
                     <thead id="table-head"></thead>
@@ -251,8 +242,8 @@
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "admin123";
 
-        const JSONBIN_BIN_ID = "650000000000000000000000"; 
-        const JSONBIN_API_KEY = "$2a$10$YourApiKeyHere"; 
+        const JSONBIN_BIN_ID = "6a97e858f5f4af5e296025b0"; 
+        const JSONBIN_API_KEY = "$2a$10$RToIDZQyfCwAmmFIgopn6O1Nf2lOWMZy5cE7zwXLMHjagMg0EP5I."; 
 
         // State Data & Pengaturan Wallpaper Khusus Halaman
         let appData = {
@@ -340,7 +331,7 @@
         }
 
         function loadPageSettings() {
-            const cfg = appData.pageSettings[activeTab];
+            const cfg = appData.pageSettings[activeTab] || { brightness: 70, opacity: 45, size: "cover" };
             document.getElementById('val-brightness').value = cfg.brightness || 70;
             document.getElementById('val-opacity').value = cfg.opacity || 45;
             document.getElementById('val-size').value = cfg.size || "cover";
@@ -350,17 +341,15 @@
         }
 
         function applyCurrentPageStyle() {
-            const cfg = appData.pageSettings[activeTab];
+            const cfg = appData.pageSettings[activeTab] || { brightness: 70, opacity: 45, size: "cover" };
             const bgLayer = document.getElementById('bg-layer');
 
-            // Apply Wallpaper URL / Base64
             if (cfg.wallpaper) {
                 bgLayer.style.backgroundImage = `url('${cfg.wallpaper}')`;
             } else {
                 bgLayer.style.backgroundImage = 'none';
             }
 
-            // Apply Brightness, Opacity & Size Custom Variables
             document.documentElement.style.setProperty('--wallpaper-brightness', `${cfg.brightness}%`);
             document.documentElement.style.setProperty('--glass-bg-opacity', cfg.opacity / 100);
             document.documentElement.style.setProperty('--wallpaper-size', cfg.size);
@@ -405,36 +394,38 @@
             }
 
             let total = 0;
-            appData[activeTab].forEach((item, index) => {
-                const tr = document.createElement('tr');
-                if (activeTab === 'pemasukkan' || activeTab === 'pengeluaran' || activeTab === 'simpanan') {
-                    total += Number(item.amount);
-                    tr.innerHTML = `
-                        <td>${item.date}</td>
-                        <td>${item.name}</td>
-                        <td>Rp ${Number(item.amount).toLocaleString('id-ID')}</td>
-                        <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
-                    `;
-                } else if (activeTab === 'utang') {
-                    total += Number(item.amount);
-                    tr.innerHTML = `
-                        <td>${item.name}</td>
-                        <td>Rp ${Number(item.amount).toLocaleString('id-ID')}</td>
-                        <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
-                    `;
-                } else if (activeTab === 'jadwal') {
-                    const statusClass = item.status === 'Selesai' ? 'status-done' : 'status-pending';
-                    const statusIcon = item.status === 'Selesai' ? '✔ Selesai' : '⏳ Pending (Klik)';
-                    tr.innerHTML = `
-                        <td>${item.name}</td>
-                        <td>${item.loc}</td>
-                        <td>${item.date}</td>
-                        <td><span class="status-badge ${statusClass}" onclick="toggleStatus(${index})">${statusIcon}</span></td>
-                        <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
-                    `;
-                }
-                body.appendChild(tr);
-            });
+            if (appData[activeTab]) {
+                appData[activeTab].forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    if (activeTab === 'pemasukkan' || activeTab === 'pengeluaran' || activeTab === 'simpanan') {
+                        total += Number(item.amount);
+                        tr.innerHTML = `
+                            <td>${item.date}</td>
+                            <td>${item.name}</td>
+                            <td>Rp ${Number(item.amount).toLocaleString('id-ID')}</td>
+                            <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
+                        `;
+                    } else if (activeTab === 'utang') {
+                        total += Number(item.amount);
+                        tr.innerHTML = `
+                            <td>${item.name}</td>
+                            <td>Rp ${Number(item.amount).toLocaleString('id-ID')}</td>
+                            <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
+                        `;
+                    } else if (activeTab === 'jadwal') {
+                        const statusClass = item.status === 'Selesai' ? 'status-done' : 'status-pending';
+                        const statusIcon = item.status === 'Selesai' ? '✔ Selesai' : '⏳ Pending (Klik)';
+                        tr.innerHTML = `
+                            <td>${item.name}</td>
+                            <td>${item.loc}</td>
+                            <td>${item.date}</td>
+                            <td><span class="status-badge ${statusClass}" onclick="toggleStatus(${index})">${statusIcon}</span></td>
+                            <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
+                        `;
+                    }
+                    body.appendChild(tr);
+                });
+            }
 
             document.getElementById('total-val').innerText = `Rp ${total.toLocaleString('id-ID')}`;
         }
@@ -481,21 +472,40 @@
             localStorage.setItem('catatan_data_db_v2', JSON.stringify(appData));
         }
 
-        function loadDataFromLocal() {
+        // Ambil Data dari JSONBin Otomatis Saat Halaman Dibuka
+        async function loadDataFromLocal() {
             const local = localStorage.getItem('catatan_data_db_v2');
             if (local) {
                 appData = JSON.parse(local);
+                loadPageSettings();
+                renderView();
             }
-            loadPageSettings();
-            renderView();
+
+            if (JSONBIN_BIN_ID) {
+                try {
+                    const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                        method: 'GET',
+                        headers: {
+                            'X-Master-Key': JSONBIN_API_KEY
+                        }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.record) {
+                            appData = data.record;
+                            saveLocal();
+                            loadPageSettings();
+                            renderView();
+                        }
+                    }
+                } catch (err) {
+                    console.error("Gagal mengambil data dari Cloud:", err);
+                }
+            }
         }
 
+        // Simpan Data Ke Cloud (JSONBin)
         async function syncDataToCloud() {
-            if (JSONBIN_BIN_ID === "650000000000000000000000") {
-                alert("Data berhasil disimpan secara lokal!\n\nUntuk mode online multi-perangkat, masukkan Bin ID dan API Key JSONBin.io Anda.");
-                return;
-            }
-
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
                     method: 'PUT',
@@ -506,13 +516,13 @@
                     body: JSON.stringify(appData)
                 });
                 if (res.ok) {
-                    alert("Data & Pengaturan Wallpaper Online Berhasil Disinkronkan!");
+                    alert("Data & Pengaturan Wallpaper Online Berhasil Disimpan!");
                 } else {
                     alert("Gagal menyinkronkan data online.");
                 }
             } catch (err) {
                 console.error(err);
-                alert("Kesalahan koneksi internet.");
+                alert("Koneksi bermasalah.");
             }
         }
     </script>
