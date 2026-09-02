@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CATATAN DATA - ADMIN ADVANCED</title>
     <style>
         :root {
@@ -57,33 +57,36 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
             display: flex; justify-content: center; align-items: center; z-index: 999;
+            padding: 20px;
         }
         .login-box {
-            background: rgba(30, 30, 50, 0.7); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px; border-radius: 15px; width: 320px; text-align: center;
+            background: rgba(30, 30, 50, 0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px 20px; border-radius: 15px; 
+            width: 100%; max-width: 340px; text-align: center;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
-        .login-box h2 { margin-bottom: 20px; color: var(--accent-color); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .login-box h2 { margin-bottom: 20px; color: var(--accent-color); text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-size: 1.4rem; }
         .login-box input {
-            width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.5); color: #fff; outline: none;
+            width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5); color: #fff; outline: none; font-size: 1rem;
         }
         .login-box button {
-            width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px;
-            background: var(--accent-color); color: #fff; font-weight: bold; cursor: pointer;
+            width: 100%; padding: 12px; margin-top: 15px; border: none; border-radius: 8px;
+            background: var(--accent-color); color: #fff; font-weight: bold; cursor: pointer; font-size: 1rem;
         }
 
-        /* Sidebar Navigasi */
+        /* Sidebar Navigasi (Desktop) */
         .sidebar {
             width: 260px; 
             background: rgba(20, 20, 35, var(--glass-bg-opacity)); 
             backdrop-filter: blur(var(--glass-blur-val));
             display: flex; flex-direction: column; border-right: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            flex-shrink: 0;
         }
         .sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
         .sidebar-header h3 { color: var(--text-color); font-size: 1.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
-        .menu { list-style: none; padding: 15px 0; flex-grow: 1; }
+        .menu { list-style: none; padding: 15px 0; flex-grow: 1; overflow-y: auto; }
         .menu li {
             padding: 12px 20px; cursor: pointer; color: var(--text-muted); font-weight: 500;
             transition: 0.3s; display: flex; align-items: center; justify-content: space-between;
@@ -91,15 +94,16 @@
         .menu li:hover, .menu li.active { background: rgba(255, 255, 255, 0.2); color: var(--text-color); border-left: 4px solid var(--accent-color); }
         
         /* Main Content */
-        .main-content { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; }
-        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .page-title { font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .main-content { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 10px; flex-wrap: wrap; }
+        .page-title { font-size: 1.4rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
         /* Status Sync Indicator */
         .sync-status {
-            font-size: 0.85rem; padding: 6px 14px; border-radius: 20px;
+            font-size: 0.8rem; padding: 6px 12px; border-radius: 20px;
             background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
             color: var(--text-muted); transition: all 0.3s ease; font-weight: bold;
+            white-space: nowrap;
         }
         .sync-status.saving { color: #ffc107; border-color: #ffc107; }
         .sync-status.saved { color: var(--success); border-color: var(--success); }
@@ -110,38 +114,43 @@
             background: rgba(30, 30, 50, var(--glass-bg-opacity)); 
             backdrop-filter: blur(var(--glass-blur-val));
             border: 1px solid rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 12px; margin-bottom: 20px;
-            display: flex; gap: 15px; flex-wrap: wrap; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex; gap: 12px; flex-wrap: wrap; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .control-group { display: flex; flex-direction: column; gap: 5px; }
-        .control-group label { font-size: 0.8rem; color: var(--text-muted); }
+        .control-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 140px; }
+        .control-group label { font-size: 0.75rem; color: var(--text-muted); }
         .control-group input[type="text"], .control-group select {
-            padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0,0,0,0.4); color: #fff; outline: none;
+            padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0,0,0,0.4); color: #fff; outline: none; font-size: 0.85rem; width: 100%;
         }
-        .control-group input[type="range"] { accent-color: var(--accent-color); cursor: pointer; }
+        .control-group input[type="range"] { accent-color: var(--accent-color); cursor: pointer; width: 100%; }
 
         /* Form Inputs & Tables */
         .form-inline { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .form-inline input {
-            padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(var(--glass-blur-val)); color: #fff; flex: 1; min-width: 150px; outline: none;
+            padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(var(--glass-blur-val)); color: #fff; flex: 1; min-width: 140px; outline: none; font-size: 0.9rem;
         }
         .form-inline input::placeholder { color: #bbb; }
         .btn {
-            padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 0.9rem;
         }
         .btn-primary { background: var(--accent-color); color: #fff; }
         .btn-danger { background: var(--danger); color: #fff; }
 
-        table { 
-            width: 100%; border-collapse: collapse; 
+        /* Table Container Responsif */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             background: rgba(30, 30, 50, var(--glass-bg-opacity)); 
             backdrop-filter: blur(var(--glass-blur-val));
-            border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
         }
-        th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        th { background: rgba(0, 0, 0, 0.5); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
+
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.85rem; }
+        th { background: rgba(0, 0, 0, 0.5); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
         tr:hover { background: rgba(255, 255, 255, 0.1); }
         
         .total-card {
@@ -149,11 +158,11 @@
             background: rgba(30, 30, 50, var(--glass-bg-opacity)); 
             backdrop-filter: blur(var(--glass-blur-val));
             border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px;
-            text-align: right; font-size: 1.2rem; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: right; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .status-badge {
-            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; user-select: none; display: inline-block; font-weight: bold;
+            padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; user-select: none; display: inline-block; font-weight: bold; white-space: nowrap;
         }
         .status-pending { background: rgba(255, 199, 0, 0.8); color: #000; }
         .status-done { background: rgba(80, 205, 137, 0.85); color: #fff; }
@@ -161,8 +170,100 @@
         .hidden { display: none !important; }
 
         .file-upload-btn {
-            padding: 6px 12px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px; cursor: pointer; font-size: 0.85rem; text-align: center; display: inline-block;
+            padding: 8px 10px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px; cursor: pointer; font-size: 0.85rem; text-align: center; display: block; width: 100%;
+        }
+
+        /* CSS KHUSUS UNTUK TAMPILAN HP / MOBILE (Screen Width < 768px) */
+        @media screen and (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            }
+
+            .sidebar-header {
+                padding: 12px;
+            }
+
+            .sidebar-header h3 {
+                font-size: 1.1rem;
+            }
+
+            .menu {
+                display: flex;
+                overflow-x: auto;
+                padding: 0;
+                white-space: nowrap;
+            }
+
+            .menu li {
+                padding: 10px 14px;
+                font-size: 0.85rem;
+                border-left: none !important;
+                border-bottom: 3px solid transparent;
+                flex-shrink: 0;
+            }
+
+            .menu li:hover, .menu li.active {
+                border-bottom: 3px solid var(--accent-color);
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .sidebar div:last-child {
+                display: none; /* Sembunyikan tombol logout bawah di mobile */
+            }
+
+            .mobile-logout-btn {
+                display: inline-block !important;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .header-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .page-title {
+                font-size: 1.2rem;
+            }
+
+            .form-inline {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .form-inline input, .form-inline button {
+                width: 100%;
+            }
+
+            .admin-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .control-group {
+                width: 100%;
+            }
+
+            th, td {
+                padding: 10px 12px;
+            }
+        }
+
+        .mobile-logout-btn {
+            display: none;
+            padding: 6px 12px;
+            font-size: 0.8rem;
         }
     </style>
 </head>
@@ -186,17 +287,18 @@
     <div class="app-container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="sidebar-header">
+            <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h3>CATATAN DATA</h3>
+                <button class="btn btn-danger mobile-logout-btn" onclick="logout()">Logout</button>
             </div>
             <ul class="menu">
-                <li class="active" onclick="switchTab('pemasukkan')">Tabel Pemasukkan</li>
-                <li onclick="switchTab('pengeluaran')">Tabel Pengeluaran</li>
+                <li class="active" onclick="switchTab('pemasukkan')">Pemasukkan</li>
+                <li onclick="switchTab('pengeluaran')">Pengeluaran</li>
                 <li onclick="switchTab('jadwal')">Jadwal Job</li>
                 <li onclick="switchTab('utang')">Utang / Piutang</li>
-                <li onclick="switchTab('simpanan')">Rekapan Simpanan</li>
+                <li onclick="switchTab('simpanan')">Simpanan</li>
             </ul>
-            <div style="padding: 20px;">
+            <div style="padding: 15px;">
                 <button class="btn btn-danger" style="width: 100%;" onclick="logout()">Logout Admin</button>
             </div>
         </div>
@@ -242,8 +344,8 @@
                 <!-- Form Dinamis JS -->
             </div>
 
-            <!-- Table View -->
-            <div style="overflow-x: auto;">
+            <!-- Table View Responsif -->
+            <div class="table-responsive">
                 <table id="data-table">
                     <thead id="table-head"></thead>
                     <tbody id="table-body"></tbody>
@@ -535,7 +637,7 @@
 
             if (JSONBIN_BIN_ID) {
                 try {
-                    setSyncStatus("🔄 Memuat data...", "saving");
+                    setSyncStatus("🔄 Memuat...", "saving");
                     const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
                         method: 'GET',
                         headers: {
@@ -575,11 +677,11 @@
                 if (res.ok) {
                     setSyncStatus("🟢 Tersimpan", "saved");
                 } else {
-                    setSyncStatus("🔴 Gagal Auto-Sync", "error");
+                    setSyncStatus("🔴 Gagal Sync", "error");
                 }
             } catch (err) {
                 console.error(err);
-                setSyncStatus("🔴 Koneksi Bermasalah", "error");
+                setSyncStatus("🔴 Offline", "error");
             }
         }
     </script>
