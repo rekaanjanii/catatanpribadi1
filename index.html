@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATATAN DATA - ADMIN ADVANCED</title>
+    <style>
+        :root {
+            --accent-color: #7239ea;
+            --text-color: #ffffff;
+            --text-muted: #e1e1e1;
+            --success: #50cd89;
+            --danger: #f1416c;
+            
+            /* Dynamic Theme Variables */
+            --glass-bg-opacity: 0.45;
+            --glass-blur-val: 16px;
+            --wallpaper-brightness: 70%;
+            --wallpaper-size: cover;
+            --wallpaper-zoom: 100%;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            background-color: #0d0e15;
+            color: var(--text-color); 
+            display: flex; 
+            height: 100vh; 
+            overflow: hidden; 
+            position: relative;
+        }
+
+        /* Background Layer (Wallpaper & Brightness Control) */
+        #bg-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: var(--wallpaper-size);
+            filter: brightness(var(--wallpaper-brightness));
+            transition: background-image 0.5s ease, filter 0.3s ease;
+            z-index: 1;
+        }
+
+        /* Layout Container */
+        .app-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Login Overlay */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center; z-index: 999;
+        }
+        .login-box {
+            background: rgba(30, 30, 50, 0.7); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px; border-radius: 15px; width: 320px; text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+        .login-box h2 { margin-bottom: 20px; color: var(--accent-color); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .login-box input {
+            width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5); color: #fff; outline: none;
+        }
+        .login-box button {
+            width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px;
+            background: var(--accent-color); color: #fff; font-weight: bold; cursor: pointer;
+        }
+
+        /* Sidebar Navigasi Tembus Pandang */
+        .sidebar {
+            width: 260px; 
+            background: rgba(20, 20, 35, var(--glass-bg-opacity)); 
+            backdrop-filter: blur(var(--glass-blur-val));
+            display: flex; flex-direction: column; border-right: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        }
+        .sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
+        .sidebar-header h3 { color: var(--text-color); font-size: 1.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+        .menu { list-style: none; padding: 15px 0; flex-grow: 1; }
+        .menu li {
+            padding: 12px 20px; cursor: pointer; color: var(--text-muted); font-weight: 500;
+            transition: 0.3s; display: flex; align-items: center; justify-content: space-between;
+        }
+        .menu li:hover, .menu li.active { background: rgba(255, 255, 255, 0.2); color: var(--text-color); border-left: 4px solid var(--accent-color); }
+        
+        /* Main Content */
+        .main-content { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .page-title { font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+        /* Panel Kontrol Pengaturan Wallpaper Per-Halaman */
+        .admin-controls {
+            background: rgba(30, 30, 50, var(--glass-bg-opacity)); 
+            backdrop-filter: blur(var(--glass-blur-val));
+            border: 1px solid rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 12px; margin-bottom: 20px;
+            display: flex; gap: 15px; flex-wrap: wrap; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .control-group { display: flex; flex-direction: column; gap: 5px; }
+        .control-group label { font-size: 0.8rem; color: var(--text-muted); }
+        .control-group input[type="text"], .control-group select {
+            padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0,0,0,0.4); color: #fff; outline: none;
+        }
+        .control-group input[type="range"] { accent-color: var(--accent-color); cursor: pointer; }
+
+        /* Form Inputs & Tables Tembus Pandang */
+        .form-inline { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .form-inline input {
+            padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(var(--glass-blur-val)); color: #fff; flex: 1; min-width: 150px; outline: none;
+        }
+        .form-inline input::placeholder { color: #bbb; }
+        .btn {
+            padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .btn-primary { background: var(--accent-color); color: #fff; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-success { background: var(--success); color: #fff; }
+
+        table { 
+            width: 100%; border-collapse: collapse; 
+            background: rgba(30, 30, 50, var(--glass-bg-opacity)); 
+            backdrop-filter: blur(var(--glass-blur-val));
+            border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+        th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        th { background: rgba(0, 0, 0, 0.5); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
+        tr:hover { background: rgba(255, 255, 255, 0.1); }
+        
+        .total-card {
+            margin-top: 15px; padding: 15px; 
+            background: rgba(30, 30, 50, var(--glass-bg-opacity)); 
+            backdrop-filter: blur(var(--glass-blur-val));
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px;
+            text-align: right; font-size: 1.2rem; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .status-badge {
+            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; user-select: none; display: inline-block; font-weight: bold;
+        }
+        .status-pending { background: rgba(255, 199, 0, 0.8); color: #000; }
+        .status-done { background: rgba(80, 205, 137, 0.85); color: #fff; }
+
+        .hidden { display: none !important; }
+
+        .file-upload-btn {
+            padding: 6px 12px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px; cursor: pointer; font-size: 0.85rem; text-align: center; display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Layer Background Wallpaper -->
+    <div id="bg-layer"></div>
+
+    <!-- Login Overlay -->
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>LOGIN ADMIN</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()">MASUK</button>
+            <p id="login-error" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px;"></p>
+        </div>
+    </div>
+
+    <!-- Layout Utama -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>CATATAN DATA</h3>
+            </div>
+            <ul class="menu">
+                <li class="active" onclick="switchTab('pemasukkan')">Tabel Pemasukkan</li>
+                <li onclick="switchTab('pengeluaran')">Tabel Pengeluaran</li>
+                <li onclick="switchTab('jadwal')">Jadwal Job</li>
+                <li onclick="switchTab('utang')">Utang / Piutang</li>
+                <li onclick="switchTab('simpanan')">Rekapan Simpanan</li>
+            </ul>
+            <div style="padding: 20px;">
+                <button class="btn btn-danger" style="width: 100%;" onclick="logout()">Logout Admin</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header-bar">
+                <h2 class="page-title" id="page-title">Tabel Pemasukkan</h2>
+                <button class="btn btn-success" onclick="syncDataToCloud()">Simpan Ke Cloud (Online)</button>
+            </div>
+
+            <!-- Panel Pengaturan Wallpaper Halaman Ini -->
+            <div class="admin-controls">
+                <div class="control-group">
+                    <label>Wallpaper Halaman Ini (Galeri):</label>
+                    <label for="wallpaper-file" class="file-upload-btn">📁 Unggah Foto</label>
+                    <input type="file" id="wallpaper-file" accept="image/*" style="display: none;" onchange="uploadWallpaper(event)">
+                </div>
+                <div class="control-group">
+                    <label>Atau Link Gambar:</label>
+                    <input type="text" id="wallpaper-url" placeholder="https://..." onchange="setWallpaperURL(this.value)">
+                </div>
+                <div class="control-group">
+                    <label>Kecerahan Wallpaper:</label>
+                    <input type="range" id="val-brightness" min="20" max="100" value="70" oninput="updateWallpaperSettings()">
+                </div>
+                <div class="control-group">
+                    <label>Transparansi Tabel:</label>
+                    <input type="range" id="val-opacity" min="10" max="90" value="45" oninput="updateWallpaperSettings()">
+                </div>
+                <div class="control-group">
+                    <label>Ukuran / Skala Wallpaper:</label>
+                    <select id="val-size" onchange="updateWallpaperSettings()">
+                        <option value="cover">Penuh Layar (Cover)</option>
+                        <option value="contain">Pas Gambar (Contain)</option>
+                        <option value="100% 100%">Regangkan (Stretch)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Form Input Dynamic -->
+            <div class="form-inline" id="form-container">
+                <!-- Form Dinamis JS -->
+            </div>
+
+            <!-- Table View Tembus Pandang -->
+            <div style="overflow-x: auto;">
+                <table id="data-table">
+                    <thead id="table-head"></thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+
+            <div class="total-card" id="total-container">
+                Total: <span id="total-val" style="color: var(--success);">Rp 0</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_USER = "admin";
+        const ADMIN_PASS = "admin123";
+
+        const JSONBIN_BIN_ID = "650000000000000000000000"; 
+        const JSONBIN_API_KEY = "$2a$10$YourApiKeyHere"; 
+
+        // State Data & Pengaturan Wallpaper Khusus Halaman
+        let appData = {
+            pageSettings: {
+                pemasukkan: { wallpaper: "", brightness: 70, opacity: 45, size: "cover" },
+                pengeluaran: { wallpaper: "", brightness: 70, opacity: 45, size: "cover" },
+                jadwal: { wallpaper: "", brightness: 70, opacity: 45, size: "cover" },
+                utang: { wallpaper: "", brightness: 70, opacity: 45, size: "cover" },
+                simpanan: { wallpaper: "", brightness: 70, opacity: 45, size: "cover" }
+            },
+            pemasukkan: [],
+            pengeluaran: [],
+            jadwal: [],
+            utang: [],
+            simpanan: []
+        };
+
+        let activeTab = 'pemasukkan';
+
+        function login() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if (u === ADMIN_USER && p === ADMIN_PASS) {
+                document.getElementById('login-overlay').classList.add('hidden');
+                loadDataFromLocal();
+            } else {
+                document.getElementById('login-error').innerText = "Username atau Password Salah!";
+            }
+        }
+
+        function logout() {
+            document.getElementById('login-overlay').classList.remove('hidden');
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            document.querySelectorAll('.menu li').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            const titles = {
+                pemasukkan: 'Tabel Pemasukkan',
+                pengeluaran: 'Tabel Pengeluaran',
+                jadwal: 'Jadwal Job',
+                utang: 'Utang / Piutang',
+                simpanan: 'Rekapan Data Simpanan'
+            };
+            document.getElementById('page-title').innerText = titles[tab];
+            
+            loadPageSettings();
+            renderView();
+        }
+
+        // Pengaturan Wallpaper Khusus per Halaman
+        function uploadWallpaper(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgBase64 = e.target.result;
+                    appData.pageSettings[activeTab].wallpaper = imgBase64;
+                    applyCurrentPageStyle();
+                    saveLocal();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function setWallpaperURL(url) {
+            appData.pageSettings[activeTab].wallpaper = url;
+            applyCurrentPageStyle();
+            saveLocal();
+        }
+
+        function updateWallpaperSettings() {
+            const brightness = document.getElementById('val-brightness').value;
+            const opacity = document.getElementById('val-opacity').value;
+            const size = document.getElementById('val-size').value;
+
+            appData.pageSettings[activeTab].brightness = brightness;
+            appData.pageSettings[activeTab].opacity = opacity;
+            appData.pageSettings[activeTab].size = size;
+
+            applyCurrentPageStyle();
+            saveLocal();
+        }
+
+        function loadPageSettings() {
+            const cfg = appData.pageSettings[activeTab];
+            document.getElementById('val-brightness').value = cfg.brightness || 70;
+            document.getElementById('val-opacity').value = cfg.opacity || 45;
+            document.getElementById('val-size').value = cfg.size || "cover";
+            document.getElementById('wallpaper-url').value = cfg.wallpaper && !cfg.wallpaper.startsWith('data:image') ? cfg.wallpaper : "";
+
+            applyCurrentPageStyle();
+        }
+
+        function applyCurrentPageStyle() {
+            const cfg = appData.pageSettings[activeTab];
+            const bgLayer = document.getElementById('bg-layer');
+
+            // Apply Wallpaper URL / Base64
+            if (cfg.wallpaper) {
+                bgLayer.style.backgroundImage = `url('${cfg.wallpaper}')`;
+            } else {
+                bgLayer.style.backgroundImage = 'none';
+            }
+
+            // Apply Brightness, Opacity & Size Custom Variables
+            document.documentElement.style.setProperty('--wallpaper-brightness', `${cfg.brightness}%`);
+            document.documentElement.style.setProperty('--glass-bg-opacity', cfg.opacity / 100);
+            document.documentElement.style.setProperty('--wallpaper-size', cfg.size);
+        }
+
+        function renderView() {
+            const head = document.getElementById('table-head');
+            const body = document.getElementById('table-body');
+            const form = document.getElementById('form-container');
+            const totalContainer = document.getElementById('total-container');
+
+            head.innerHTML = '';
+            body.innerHTML = '';
+            form.innerHTML = '';
+
+            if (activeTab === 'pemasukkan' || activeTab === 'pengeluaran' || activeTab === 'simpanan') {
+                totalContainer.classList.remove('hidden');
+                head.innerHTML = `<tr><th>Tanggal</th><th>Nama</th><th>Jumlah / Harga</th><th>Aksi</th></tr>`;
+                form.innerHTML = `
+                    <input type="date" id="inp-date">
+                    <input type="text" id="inp-name" placeholder="Nama / Keterangan">
+                    <input type="number" id="inp-amount" placeholder="Harga / Jumlah (Rp)">
+                    <button class="btn btn-primary" onclick="addData()">Tambah Data</button>
+                `;
+            } else if (activeTab === 'utang') {
+                totalContainer.classList.remove('hidden');
+                head.innerHTML = `<tr><th>Nama</th><th>Harga / Total</th><th>Aksi</th></tr>`;
+                form.innerHTML = `
+                    <input type="text" id="inp-name" placeholder="Nama">
+                    <input type="number" id="inp-amount" placeholder="Harga / Nominal (Rp)">
+                    <button class="btn btn-primary" onclick="addData()">Tambah Data</button>
+                `;
+            } else if (activeTab === 'jadwal') {
+                totalContainer.classList.add('hidden');
+                head.innerHTML = `<tr><th>Nama Tempat / Resto</th><th>Lokasi</th><th>Tanggal Update</th><th>Status</th><th>Aksi</th></tr>`;
+                form.innerHTML = `
+                    <input type="text" id="inp-name" placeholder="Nama Tempat/Outlet/Resto">
+                    <input type="text" id="inp-loc" placeholder="Lokasi">
+                    <input type="date" id="inp-date">
+                    <button class="btn btn-primary" onclick="addData()">Tambah Job</button>
+                `;
+            }
+
+            let total = 0;
+            appData[activeTab].forEach((item, index) => {
+                const tr = document.createElement('tr');
+                if (activeTab === 'pemasukkan' || activeTab === 'pengeluaran' || activeTab === 'simpanan') {
+                    total += Number(item.amount);
+                    tr.innerHTML = `
+                        <td>${item.date}</td>
+                        <td>${item.name}</td>
+                        <td>Rp ${Number(item.amount).toLocaleString('id-ID')}</td>
+                        <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
+                    `;
+                } else if (activeTab === 'utang') {
+                    total += Number(item.amount);
+                    tr.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>Rp ${Number(item.amount).toLocaleString('id-ID')}</td>
+                        <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
+                    `;
+                } else if (activeTab === 'jadwal') {
+                    const statusClass = item.status === 'Selesai' ? 'status-done' : 'status-pending';
+                    const statusIcon = item.status === 'Selesai' ? '✔ Selesai' : '⏳ Pending (Klik)';
+                    tr.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>${item.loc}</td>
+                        <td>${item.date}</td>
+                        <td><span class="status-badge ${statusClass}" onclick="toggleStatus(${index})">${statusIcon}</span></td>
+                        <td><button class="btn btn-danger" onclick="deleteData(${index})">Hapus</button></td>
+                    `;
+                }
+                body.appendChild(tr);
+            });
+
+            document.getElementById('total-val').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function addData() {
+            let item = {};
+            if (activeTab === 'pemasukkan' || activeTab === 'pengeluaran' || activeTab === 'simpanan') {
+                const date = document.getElementById('inp-date').value;
+                const name = document.getElementById('inp-name').value;
+                const amount = document.getElementById('inp-amount').value;
+                if (!date || !name || !amount) return alert("Isi semua bidang!");
+                item = { date, name, amount: Number(amount) };
+            } else if (activeTab === 'utang') {
+                const name = document.getElementById('inp-name').value;
+                const amount = document.getElementById('inp-amount').value;
+                if (!name || !amount) return alert("Isi semua bidang!");
+                item = { name, amount: Number(amount) };
+            } else if (activeTab === 'jadwal') {
+                const name = document.getElementById('inp-name').value;
+                const loc = document.getElementById('inp-loc').value;
+                const date = document.getElementById('inp-date').value;
+                if (!name || !loc || !date) return alert("Isi semua bidang!");
+                item = { name, loc, date, status: 'Pending' };
+            }
+
+            appData[activeTab].push(item);
+            saveLocal();
+            renderView();
+        }
+
+        function deleteData(index) {
+            appData[activeTab].splice(index, 1);
+            saveLocal();
+            renderView();
+        }
+
+        function toggleStatus(index) {
+            appData.jadwal[index].status = appData.jadwal[index].status === 'Selesai' ? 'Pending' : 'Selesai';
+            saveLocal();
+            renderView();
+        }
+
+        function saveLocal() {
+            localStorage.setItem('catatan_data_db_v2', JSON.stringify(appData));
+        }
+
+        function loadDataFromLocal() {
+            const local = localStorage.getItem('catatan_data_db_v2');
+            if (local) {
+                appData = JSON.parse(local);
+            }
+            loadPageSettings();
+            renderView();
+        }
+
+        async function syncDataToCloud() {
+            if (JSONBIN_BIN_ID === "650000000000000000000000") {
+                alert("Data berhasil disimpan secara lokal!\n\nUntuk mode online multi-perangkat, masukkan Bin ID dan API Key JSONBin.io Anda.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify(appData)
+                });
+                if (res.ok) {
+                    alert("Data & Pengaturan Wallpaper Online Berhasil Disinkronkan!");
+                } else {
+                    alert("Gagal menyinkronkan data online.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Kesalahan koneksi internet.");
+            }
+        }
+    </script>
+</body>
+</html>
