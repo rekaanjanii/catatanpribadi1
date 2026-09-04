@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catatan Data Beautiful Dashboard - Super JSON Edition</title>
+    <title>DATA REKA</title>
     <style>
         :root {
             --bg-base: #1a0b1e;
@@ -126,6 +126,34 @@
         .sync-badge.saved { border-color: var(--success); color: var(--success); box-shadow: 0 0 8px rgba(0,242,254,0.3); }
         .sync-badge.saving { border-color: var(--warning); color: var(--warning); }
         .sync-badge.error { border-color: var(--danger); color: var(--danger); }
+
+        /* FITUR BARU: RUNNING TEXT / MARQUEE BAR */
+        .running-text-container {
+            background: rgba(0, 0, 0, 0.45);
+            border-bottom: 1px solid rgba(255, 182, 193, 0.15);
+            padding: 8px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .running-text-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-shadow: 0 0 8px var(--accent-glow);
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
 
         /* BODY & PAGES */
         .app-body {
@@ -564,9 +592,16 @@
         <!-- HEADER -->
         <div class="app-header">
             <div class="app-title">
-                <span>💖</span> CATATAN DATA
+                <span>💖</span> REKA ANJANI
             </div>
             <div id="sync-indicator" class="sync-badge saving">⏳ Memuat Cloud...</div>
+        </div>
+
+        <!-- FITUR BARU: TEKS BERJALAN (MARQUEE) -->
+        <div class="running-text-container">
+            <div id="running-text-display" class="running-text-content">
+                Selamat Datang di Catatan Data Pribadi ~ Semangat Mencatat Keuangan Anda Setiap Hari! ✨
+            </div>
         </div>
 
         <!-- BODY PAGES -->
@@ -612,12 +647,10 @@
                         <span class="icon">👑</span>
                         <span>Simpanan</span>
                     </button>
-                    <!-- FITUR BARU: MENU TABUNGAN INDEPENDEN -->
                     <button class="menu-btn" onclick="navigateTo('tabungan')">
                         <span class="icon">🐷</span>
                         <span>Tabungan</span>
                     </button>
-                    <!-- FITUR BARU: MENU PERSENTASE / RATIO -->
                     <button class="menu-btn" onclick="navigateTo('persentase')">
                         <span class="icon">📊</span>
                         <span>Persentase</span>
@@ -645,7 +678,7 @@
                 </div>
             </div>
 
-            <!-- PAGE: DATA VIEWER (PEMASUKKAN, PENGELUARAN, SIMPANAN, TABUNGAN, JADWAL, UTANG) -->
+            <!-- PAGE: DATA VIEWER -->
             <div id="page-data" class="page-view">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
@@ -676,7 +709,6 @@
                     <button class="btn-primary" onclick="addDataItem()">➕ Simpan Data Baru</button>
                 </div>
 
-                <!-- SEARCH & FILTER JSON -->
                 <div style="margin-bottom: 15px;">
                     <input type="text" id="search-input" class="form-control" placeholder="🔍 Cari keterangan atau tag..." onkeyup="renderCategoryView()">
                 </div>
@@ -689,14 +721,11 @@
                 </div>
             </div>
 
-            <!-- PAGE BARU: PERSENTASE & RASIO KEUTANGAN -->
+            <!-- PAGE: PERSENTASE -->
             <div id="page-persentase" class="page-view">
                 <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
                 <h3 style="color: var(--accent-color); margin-bottom: 20px;">📊 Rasio Keuangan & Persentase</h3>
-
-                <div id="ratio-container">
-                    <!-- Progress bar item diproduksi via JS -->
-                </div>
+                <div id="ratio-container"></div>
             </div>
 
             <!-- PAGE: CALENDAR -->
@@ -715,6 +744,14 @@
                 <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
                 <h3 style="color: var(--accent-color); margin-bottom: 15px;">Pengaturan Dashboard & JSON Manager</h3>
                 
+                <!-- FITUR BARU: INPUT TEKS BERJALAN DI PENGATURAN -->
+                <div class="form-card">
+                    <div class="form-group">
+                        <label>📢 Pengaturan Teks Berjalan (Running Text):</label>
+                        <input type="text" id="running-text-input" class="form-control" placeholder="Ketik teks berjalan di sini...">
+                    </div>
+                </div>
+
                 <div class="form-card">
                     <label>⚙️ Fitur JSON Cadangan (Backup & Restore):</label>
                     <div style="display: flex; gap: 10px; margin-top: 10px;">
@@ -749,13 +786,12 @@
         </div>
     </div>
 
-    <!-- SCRIPT CLOUD HYBRID ENGINE V4 (SUPER JSON) -->
+    <!-- SCRIPT CLOUD HYBRID ENGINE -->
     <script>
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "admin123";
 
-        // JSONBin Cloud Credentials
-        const JSONBIN_BIN_ID = "6a9a3d3fda38895dfe36b2c9";
+        const JSONBIN_BIN_ID = "6a9a3f91f5f4af5e296847b8";
         const JSONBIN_API_KEY = "$2a$10$RToIDZQyfCwAmmFIgopn6O1Nf2lOWMZy5cE7zwXLMHjagMg0EP5I.";
         const JSONBIN_ENDPOINT = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
@@ -773,18 +809,23 @@
 
         let tempSelectedThemeId = 1;
         let tempUploadedWallpaper = "";
-        let deleteTargetId = null; // Menyimpan ID data yang akan dihapus via Modal Pop-up
+        let deleteTargetId = null;
 
-        // SKEMA JSON TERSTRUKTUR KANONIKAL + FITUR INDEPENDEN TABUNGAN
+        // SKEMA JSON TERBARU + FITUR RUNNING TEXT
         let appData = {
-            schemaVersion: "2.0",
-            settings: { themeId: 1, wallpaper: "", brightness: 70 },
+            schemaVersion: "2.1",
+            settings: { 
+                themeId: 1, 
+                wallpaper: "", 
+                brightness: 70,
+                runningText: "Selamat Datang di Catatan Data Pribadi ~ Semangat Mencatat Keuangan Anda Setiap Hari! ✨"
+            },
             pemasukkan: [],
             pengeluaran: [],
             jadwal: [],
             utang: [],
             simpanan: [],
-            tabungan: [] // ARRAY INDEPENDEN TABUNGAN
+            tabungan: []
         };
 
         let activeCategory = 'pemasukkan';
@@ -822,6 +863,13 @@
             }
         }
 
+        function applyRunningText() {
+            const txt = (appData.settings && appData.settings.runningText) 
+                ? appData.settings.runningText 
+                : "Selamat Datang di Catatan Data Pribadi ~ Semangat Mencatat Keuangan Anda Setiap Hari! ✨";
+            document.getElementById('running-text-display').innerText = txt;
+        }
+
         function saveLocalBackup() {
             localStorage.setItem('catatan_data_app_db_v2', JSON.stringify(appData));
             updateAnalyticsUI();
@@ -832,9 +880,13 @@
             if (local) {
                 try {
                     const parsed = JSON.parse(local);
-                    appData = { ...appData, ...parsed }; // Memastikan array tabungan otomatis ada
+                    appData = { ...appData, ...parsed };
+                    if(!appData.settings) appData.settings = {};
+                    if(!appData.settings.runningText) appData.settings.runningText = "Selamat Datang di Catatan Data Pribadi ~ Semangat Mencatat Keuangan Anda Setiap Hari! ✨";
+                    
                     tempSelectedThemeId = appData.settings.themeId || 1;
                     applyThemeStyle();
+                    applyRunningText();
                     updateAnalyticsUI();
                     if (document.getElementById('page-data').classList.contains('active')) {
                         renderCategoryView();
@@ -857,10 +909,14 @@
                     const result = await res.json();
                     if (result.record && typeof result.record === 'object') {
                         appData = { ...appData, ...result.record };
-                        if (!appData.tabungan) appData.tabungan = []; // Pengaman array tabungan
+                        if (!appData.tabungan) appData.tabungan = [];
+                        if (!appData.settings) appData.settings = {};
+                        if (!appData.settings.runningText) appData.settings.runningText = "Selamat Datang di Catatan Data Pribadi ~ Semangat Mencatat Keuangan Anda Setiap Hari! ✨";
+
                         saveLocalBackup();
                         tempSelectedThemeId = appData.settings.themeId || 1;
                         applyThemeStyle();
+                        applyRunningText();
                         updateAnalyticsUI();
                         if (document.getElementById('page-data').classList.contains('active')) {
                             renderCategoryView();
@@ -947,7 +1003,6 @@
             }
         }
 
-        /* RENDERING PERSENTASE DAN PROGRESS BAR */
         function renderRatioView() {
             const container = document.getElementById('ratio-container');
             container.innerHTML = '';
@@ -959,7 +1014,6 @@
             const totalSimpanan = sumArr(appData.simpanan);
             const totalTabungan = sumArr(appData.tabungan);
 
-            // Total dasar pembanding rasio (Total dana yang dicatat)
             const totalGrand = totalPemasukkan + totalPengeluaran + totalSimpanan + totalTabungan || 1;
 
             const items = [
@@ -987,7 +1041,6 @@
             });
         }
 
-        /* MANAJEMEN EKSPOR/IMPOR FILE JSON AKURAT */
         function exportJSONData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
             const downloadAnchor = document.createElement('a');
@@ -1010,6 +1063,7 @@
                         appData = { ...appData, ...parsed };
                         saveOnlineData();
                         applyThemeStyle();
+                        applyRunningText();
                         alert("✅ JSON Berhasil Diimpor!");
                         navigateTo('dashboard');
                     } else {
@@ -1070,6 +1124,7 @@
         function loadSettingsUI() {
             document.getElementById('wallpaper-url-input').value = appData.settings.wallpaper.startsWith('data:') ? '' : (appData.settings.wallpaper || '');
             document.getElementById('val-brightness').value = appData.settings.brightness || 70;
+            document.getElementById('running-text-input').value = appData.settings.runningText || '';
             tempUploadedWallpaper = "";
         }
 
@@ -1084,8 +1139,10 @@
             }
 
             appData.settings.brightness = document.getElementById('val-brightness').value;
+            appData.settings.runningText = document.getElementById('running-text-input').value.trim();
 
             applyThemeStyle();
+            applyRunningText();
             saveOnlineData();
             alert("✅ Pengaturan Berhasil Disimpan!");
         }
@@ -1107,7 +1164,6 @@
             document.documentElement.style.setProperty('--wallpaper-brightness', (appData.settings.brightness || 70) / 100);
         }
 
-        /* MANAJEMEN DATA (JSON STRUCT) */
         function addDataItem() {
             const date = document.getElementById('input-date').value;
             const desc = document.getElementById('input-desc').value.trim();
@@ -1119,7 +1175,6 @@
                 return;
             }
 
-            // SKEMA DATA LENGKAP & SISTEMATIS
             const newItem = {
                 id: "ITEM_" + Date.now(),
                 date: date,
@@ -1140,7 +1195,6 @@
             saveOnlineData();
         }
 
-        /* FITUR POP-UP KONFIRMASI HAPUS */
         function promptDeleteDataItem(id) {
             deleteTargetId = id;
             document.getElementById('delete-modal').classList.add('active');
@@ -1167,7 +1221,6 @@
             const list = appData[activeCategory] || [];
             const searchKeyword = (document.getElementById('search-input')?.value || '').toLowerCase();
 
-            // FILTER DATA BERDASARKAN JSON FIELD
             const filteredList = list.filter(item => 
                 (item.description && item.description.toLowerCase().includes(searchKeyword)) ||
                 (item.tag && item.tag.toLowerCase().includes(searchKeyword))
@@ -1216,7 +1269,6 @@
             link.remove();
         }
 
-        /* KALENDER INTERAKTIF METADATA JSON */
         function changeMonth(delta) {
             currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
             renderCalendarView();
@@ -1235,7 +1287,6 @@
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            // GABUNGKAN SELURUH CATATAN
             const allEvents = [
                 ...(appData.jadwal || []), 
                 ...(appData.pemasukkan || []), 
