@@ -35,7 +35,82 @@
             position: relative;
             overflow-x: hidden;
         }
+/* ============================================================
+   STYLING MENU GRID / FITUR PREMIUM (MEWAH & ELEGAN)
+   ============================================================ */
+.menu-btn {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 215, 0, 0.18);
+    border-radius: 18px;
+    padding: 16px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    width: 100%;
+}
 
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(25deg);
+    transition: all 0.75s ease;
+}
+
+.menu-btn:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(255, 215, 0, 0.6);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    box-shadow: 0 12px 28px rgba(255, 215, 0, 0.25), 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.menu-btn:hover::before {
+    left: 125%;
+}
+
+.menu-btn .icon {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+}
+
+.menu-btn:hover .icon {
+    transform: scale(1.2) rotate(-5deg);
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+}
+
+.menu-btn span:not(.icon) {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #f0f0f0;
+    letter-spacing: 0.5px;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.4s ease, text-shadow 0.4s ease;
+}
+
+.menu-btn:hover span:not(.icon) {
+    transform: translateX(8px); /* Efek teks bergeser ke kanan */
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
         /* 3D ANIMATED BACKGROUND & PARTICLE MESH */
         #bg-mesh {
             position: fixed;
