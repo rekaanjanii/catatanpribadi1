@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>REKA ANJANI - LUXURY FEMININE DASHBOARD ONLINE</title>
+    <title>CATATAN DATA - LUXURY FEMININE DASHBOARD ONLINE</title>
     <style>
         :root {
             --bg-base: #0f0a15;
@@ -13,7 +13,7 @@
             --text-muted: #e2b6d5;
             --success: #00ff88;
             --danger: #ff477e;
-            --card-bg: rgba(30, 18, 41, 0.75);
+            --card-bg: rgba(30, 18, 41, 0.85);
             --glass-border: rgba(255, 182, 217, 0.25);
             --glass-blur: 18px;
             --wallpaper-brightness: 0.7;
@@ -52,7 +52,7 @@
 
         #login-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 5, 15, 0.92); backdrop-filter: blur(20px);
+            background: rgba(10, 5, 15, 0.95); backdrop-filter: blur(20px);
             display: flex; justify-content: center; align-items: center; z-index: 9999;
             padding: 20px;
         }
@@ -96,7 +96,6 @@
             flex: 1; padding: 20px; overflow-y: auto; position: relative;
         }
 
-        /* BANNER TANGGAL DASHBOARD */
         .date-display-box {
             background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--glass-border); border-radius: 16px;
@@ -123,18 +122,16 @@
             padding: 22px 12px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: floatCard 4s ease-in-out infinite;
+            transition: all 0.3s ease;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: 10px;
         }
 
         .menu-card:hover, .menu-card:active {
-            transform: translateY(-8px) scale(1.04);
+            transform: translateY(-5px) scale(1.02);
             border-color: var(--accent-color);
             box-shadow: 0 12px 30px var(--accent-glow);
-            background: rgba(50, 25, 65, 0.85);
         }
 
         .card-icon {
@@ -144,10 +141,9 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 1.8rem;
             border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; letter-spacing: 0.5px; }
+        .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; }
 
         .page-view { display: none; max-width: 800px; margin: 0 auto; width: 100%; }
         .page-view.active { display: block; animation: fadeIn 0.3s ease-in-out; }
@@ -156,20 +152,18 @@
         .btn-back {
             background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border); color: #fff;
             padding: 8px 16px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; font-weight: bold;
-            display: flex; align-items: center; gap: 6px; backdrop-filter: blur(8px);
         }
 
         .calendar-box {
             background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         }
         .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .calendar-controls button {
             background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: #fff;
             padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold;
         }
-        .month-year-label { font-size: 1.1rem; font-weight: bold; color: #fff; text-shadow: 0 0 8px var(--accent-color); }
+        .month-year-label { font-size: 1.1rem; font-weight: bold; color: #fff; }
 
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
         .day-header { font-weight: bold; font-size: 0.8rem; color: var(--text-muted); padding-bottom: 8px; }
@@ -177,17 +171,15 @@
             background: rgba(0, 0, 0, 0.35); border: 1px solid var(--glass-border);
             border-radius: 12px; aspect-ratio: 1; display: flex; flex-direction: column;
             align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold;
-            position: relative; transition: 0.3s;
         }
         .calendar-day-cell.has-job {
-            border-color: var(--success); background: rgba(0, 255, 136, 0.12); box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
+            border-color: var(--success); background: rgba(0, 255, 136, 0.15); box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
 
         .btn-download {
             background: linear-gradient(135deg, #00c853, #64dd17); color: #fff; border: none;
-            padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
+            padding: 12px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; width: 100%;
-            box-shadow: 0 4px 14px rgba(0,200,83,0.3);
         }
 
         .form-box {
@@ -195,17 +187,16 @@
             border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; margin-bottom: 20px;
             display: flex; flex-direction: column; gap: 10px;
         }
-        .form-box input, .form-box select {
+        .form-box input {
             padding: 12px; border-radius: 10px; border: 1px solid var(--glass-border);
             background: rgba(0,0,0,0.5); color: #fff; outline: none; font-size: 0.9rem;
         }
         .btn-action {
             padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;
             background: linear-gradient(135deg, var(--accent-color), #ff9ebb); color: #fff; font-size: 0.9rem;
-            box-shadow: 0 4px 14px var(--accent-glow);
         }
 
-        .data-list-vertical { display: flex; flex-direction: column; gap: 12px; }
+        .data-list-vertical { display: flex; flex-direction: column; gap: 10px; min-height: 50px; }
         .data-card-item {
             background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px 16px;
@@ -233,20 +224,19 @@
             display: flex; flex-direction: column; gap: 18px;
         }
         .theme-grid-container {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 10px; max-height: 250px; overflow-y: auto; padding-right: 5px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 10px; max-height: 200px; overflow-y: auto; padding-right: 5px;
         }
         .theme-option-card {
             border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px;
             text-align: center; cursor: pointer; font-size: 0.75rem; font-weight: bold;
             display: flex; flex-direction: column; align-items: center; gap: 6px;
-            background: rgba(0,0,0,0.4); transition: 0.3s;
+            background: rgba(0,0,0,0.4);
         }
         .theme-option-card.selected { border-color: var(--accent-color); box-shadow: 0 0 12px var(--accent-glow); }
         .theme-color-dots { display: flex; gap: 4px; }
         .color-dot { width: 14px; height: 14px; border-radius: 50%; }
 
-        @keyframes floatCard { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
         @keyframes pulseGlow { 0% { box-shadow: 0 0 15px var(--accent-glow); } 100% { box-shadow: 0 0 35px var(--accent-glow); } }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
@@ -270,19 +260,17 @@
     <div class="app-container">
         <div class="top-navbar">
             <div class="brand-title">CATATAN DATA</div>
-            <div id="sync-indicator" class="sync-badge saving">⏳ Memuat...</div>
+            <div id="sync-indicator" class="sync-badge saving">⏳ Memuat Cloud...</div>
         </div>
 
         <div class="content-body">
 
-            <!-- DASHBOARD UTAMA -->
             <div id="page-dashboard" class="page-view active">
                 <div style="text-align: center; margin-bottom: 15px;">
                     <h2 style="font-size: 1.35rem; font-weight: 700;">Selamat Datang, Admin</h2>
                     <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Pilih menu di bawah untuk mengelola data</p>
                 </div>
 
-                <!-- TAMPILAN TANGGAL & WAKTU REALTIME -->
                 <div class="date-display-box">
                     <div class="date-day" id="dashboard-date-text">Selasa, 1 Januari 2026</div>
                     <div class="date-time" id="dashboard-clock-text">Jam: 00:00:00 WIB</div>
@@ -324,7 +312,6 @@
                 </div>
             </div>
 
-            <!-- HALAMAN KALENDER -->
             <div id="page-calendar" class="page-view">
                 <div class="page-header">
                     <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
@@ -352,14 +339,12 @@
                 </div>
             </div>
 
-            <!-- HALAMAN TABEL DATA -->
             <div id="page-data" class="page-view">
                 <div class="page-header">
                     <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
                     <h3 id="current-page-title" style="font-size: 1.1rem;">Tabel Data</h3>
                 </div>
 
-                <!-- FITUR DOWNLOAD DATA KE HP -->
                 <button class="btn-download" onclick="downloadCSVData()">📥 Download Data File (.CSV / Excel)</button>
 
                 <div class="form-box">
@@ -377,7 +362,6 @@
                 </div>
             </div>
 
-            <!-- HALAMAN PENGATURAN ADMIN -->
             <div id="page-settings" class="page-view">
                 <div class="page-header">
                     <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
@@ -405,7 +389,6 @@
                         <input type="range" id="val-brightness" min="20" max="100" value="70" style="width: 100%;">
                     </div>
 
-                    <!-- TOMBOL KONFIRMASI PENGATURAN -->
                     <button class="btn-action" onclick="confirmSaveSettings()" style="margin-top: 10px; background: linear-gradient(135deg, #00c853, #00e676); color:#000; font-size:1rem;">
                         ✅ Klik Konfirmasi Perubahan Setting
                     </button>
@@ -419,10 +402,10 @@
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "admin123";
 
-        const JSONBIN_BIN_ID = "6a97e858f5f4af5e296025b0";
+        // JSONBin Cloud Credentials
+        const JSONBIN_BIN_ID = "6790b8f4e41b4d34e47cf7da";
         const JSONBIN_API_KEY = "$2a$10$RToIDZQyfCwAmmFIgopn6O1Nf2lOWMZy5cE7zwXLMHjagMg0EP5I.";
 
-        // 50 TEMA CEWE FULL VARIATION
         const FEMININE_THEMES = Array.from({ length: 50 }, (_, i) => {
             const hue = (i * 7.2) % 360;
             return {
@@ -430,7 +413,7 @@
                 name: `Tema Varian ${i + 1}`,
                 bg: `hsl(${hue}, 35%, 8%)`,
                 accent: `hsl(${hue}, 85%, 65%)`,
-                card: `hsla(${hue}, 30%, 15%, 0.8)`,
+                card: `hsla(${hue}, 30%, 15%, 0.85)`,
                 textMuted: `hsl(${hue}, 70%, 85%)`
             };
         });
@@ -459,24 +442,14 @@
             loadOnlineData();
         });
 
-        // WAKTU & TANGGAL REALTIME DASHBOARD
         function startDashboardClock() {
             function updateClock() {
                 const now = new Date();
                 const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                 
-                const dayName = days[now.getDay()];
-                const dayNum = now.getDate();
-                const monthName = months[now.getMonth()];
-                const year = now.getFullYear();
-
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
-
-                document.getElementById('dashboard-date-text').innerText = `${dayName}, ${dayNum} ${monthName} ${year}`;
-                document.getElementById('dashboard-clock-text').innerText = `Jam: ${hours}:${minutes}:${seconds} WIB`;
+                document.getElementById('dashboard-date-text').innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+                document.getElementById('dashboard-clock-text').innerText = `Jam: ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} WIB`;
             }
             updateClock();
             setInterval(updateClock, 1000);
@@ -489,7 +462,7 @@
         }
 
         async function loadOnlineData() {
-            setSyncStatus("⏳ Memuat...", "saving");
+            setSyncStatus("⏳ Memuat Cloud...", "saving");
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
                     headers: { 'X-Master-Key': JSONBIN_API_KEY }
@@ -500,18 +473,18 @@
                         appData = result.record;
                         tempSelectedThemeId = appData.settings.themeId || 1;
                         applyThemeStyle();
-                        setSyncStatus("🟢 Terhubung", "saved");
+                        setSyncStatus("🟢 Online Cloud", "saved");
                     }
                 } else {
-                    setSyncStatus("🔴 Offline", "error");
+                    setSyncStatus("🔴 Offline (Gagal Load)", "error");
                 }
             } catch (e) {
-                setSyncStatus("🔴 Offline", "error");
+                setSyncStatus("🔴 Offline (Error)", "error");
             }
         }
 
         async function saveOnlineData() {
-            setSyncStatus("⏳ Menyimpan...", "saving");
+            setSyncStatus("⏳ Menyimpan Cloud...", "saving");
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
                     method: 'PUT',
@@ -522,12 +495,12 @@
                     body: JSON.stringify(appData)
                 });
                 if (res.ok) {
-                    setSyncStatus("🟢 Tersimpan Online", "saved");
+                    setSyncStatus("🟢 Online Cloud", "saved");
                 } else {
                     setSyncStatus("🔴 Gagal Simpan", "error");
                 }
             } catch (e) {
-                setSyncStatus("🔴 Offline", "error");
+                setSyncStatus("🔴 Gagal Simpan", "error");
             }
         }
 
@@ -588,7 +561,6 @@
             });
         }
 
-        // AUTO RESIZE GAMBAR GALERI AGAR TIDAK GAGAL UPLOAD
         function handleWallpaperUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -599,14 +571,14 @@
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    const maxW = 800; // Resize resolusi agar tidak terlalu berat
+                    const maxW = 400; // Kompresi agar muat dalam payload JSON Cloud API
                     const scale = maxW / img.width;
                     canvas.width = maxW;
                     canvas.height = img.height * scale;
 
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    tempUploadedWallpaper = canvas.toDataURL('image/jpeg', 0.6);
-                    alert("Gambar galeri disesuaikan! Klik tombol KONFIRMASI di bawah.");
+                    tempUploadedWallpaper = canvas.toDataURL('image/jpeg', 0.4);
+                    alert("Wallpaper dipilih! Tekan 'Klik Konfirmasi Perubahan Setting' untuk menyimpan ke Cloud.");
                 };
                 img.src = e.target.result;
             };
@@ -614,12 +586,11 @@
         }
 
         function loadSettingsUI() {
-            document.getElementById('wallpaper-url-input').value = appData.settings.wallpaper.startsWith('data:') ? '' : appData.settings.wallpaper;
+            document.getElementById('wallpaper-url-input').value = appData.settings.wallpaper.startsWith('data:') ? '' : (appData.settings.wallpaper || '');
             document.getElementById('val-brightness').value = appData.settings.brightness || 70;
             tempUploadedWallpaper = "";
         }
 
-        // SIMPAN PENGATURAN SETELAH DIKONFIRMASI
         function confirmSaveSettings() {
             appData.settings.themeId = tempSelectedThemeId;
             const urlInput = document.getElementById('wallpaper-url-input').value.trim();
@@ -634,7 +605,7 @@
 
             applyThemeStyle();
             saveOnlineData();
-            alert("✅ Pengaturan Berhasil Disimpan & Diperbarui!");
+            alert("✅ Pengaturan Disimpan ke Cloud!");
         }
 
         function applyThemeStyle() {
@@ -664,6 +635,10 @@
                 return;
             }
 
+            if (!appData[activeCategory]) {
+                appData[activeCategory] = [];
+            }
+
             const newItem = { id: Date.now(), date, desc, amount };
             appData[activeCategory].push(newItem);
 
@@ -686,27 +661,31 @@
             let total = 0;
 
             const items = appData[activeCategory] || [];
-            items.forEach(item => {
-                total += item.amount;
-                const card = document.createElement('div');
-                card.className = 'data-card-item';
-                card.innerHTML = `
-                    <div class="data-info">
-                        <div class="data-primary">${item.desc}</div>
-                        <div class="data-secondary">📅 ${item.date}</div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:12px;">
-                        <div class="data-amount">Rp ${item.amount.toLocaleString('id-ID')}</div>
-                        <button class="btn-delete" onclick="deleteDataItem(${item.id})">Hapus</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+
+            if (items.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.9rem;">Belum ada data untuk kategori ini.</div>`;
+            } else {
+                items.forEach(item => {
+                    total += item.amount;
+                    const card = document.createElement('div');
+                    card.className = 'data-card-item';
+                    card.innerHTML = `
+                        <div class="data-info">
+                            <div class="data-primary">${item.desc}</div>
+                            <div class="data-secondary">📅 ${item.date}</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="data-amount">Rp ${item.amount.toLocaleString('id-ID')}</div>
+                            <button class="btn-delete" onclick="deleteDataItem(${item.id})">Hapus</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
 
             document.getElementById('total-amount-val').innerText = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
-        // FITUR DOWNLOAD TANGGAL & TABEL KE FILE CSV HP
         function downloadCSVData() {
             const items = appData[activeCategory] || [];
             if (items.length === 0) {
