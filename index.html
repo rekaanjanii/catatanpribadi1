@@ -3,834 +3,856 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REKAPAN DATA REKA</title>
+    <title>REKA ANJANI - Dashboard Application</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg-base: #120716;
-            --accent-color: #ff65a3;
-            --accent-secondary: #ff758c;
-            --accent-glow: rgba(255, 101, 163, 0.6);
-            --card-bg: rgba(25, 12, 32, 0.75);
-            --text-muted: #fcd1d7;
-            --success: #00f2fe;
-            --danger: #ff4e50;
-            --warning: #fbc531;
+            --bg-color: #120916;
+            --card-bg: #1d1026;
+            --card-border: #331942;
+            --accent-pink: #ff5e97;
+            --accent-pink-glow: rgba(255, 94, 151, 0.4);
+            --accent-green: #00e676;
+            --accent-green-glow: rgba(0, 230, 118, 0.4);
+            --text-main: #ffffff;
+            --text-sub: #a192b3;
+            --input-bg: #0d0612;
+            --btn-hover: #e04880;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.25s ease;
         }
 
         body {
-            background-color: var(--bg-base);
-            color: #ffffff;
+            background-color: var(--bg-color);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            overflow-x: hidden;
+            padding: 20px;
         }
 
-        /* BACKGROUND ANIMATED GIF & MESH LAYER */
-        #bg-gif {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            /* Background Animasi GIF Bergerak Aesthetic */
-            background-image: url('https://i.pinimg.com/originals/34/00/22/340022201d4a8e2d45c6e838e53a23a3.gif');
-            background-size: cover;
-            background-position: center;
-            filter: brightness(0.4) opacity(0.8);
-        }
-
-        #bg-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            z-index: 1;
-            opacity: var(--wallpaper-brightness, 0.7);
-            transition: opacity 0.3s ease;
-        }
-
-        /* CONTAINER 3D GLASS */
-        .app-container {
-            position: relative;
-            z-index: 2;
+        .dashboard-container {
             width: 100%;
             max-width: 950px;
-            min-height: 90vh;
-            background: var(--card-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 28px;
-            border: 1px solid rgba(255, 182, 193, 0.3);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 
-                        inset 0 0 25px rgba(255, 105, 180, 0.2);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            margin: 20px;
+            background: rgba(29, 16, 38, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        /* HEADER */
-        .app-header {
-            padding: 22px 30px;
-            background: rgba(10, 3, 15, 0.5);
-            border-bottom: 1px solid rgba(255, 182, 193, 0.2);
+        /* Header Styling */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .app-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            background: linear-gradient(45deg, #ff9a9e, #fecfef, #a1c4fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(255, 154, 158, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sync-badge {
-            font-size: 0.8rem;
-            padding: 6px 14px;
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-weight: 600;
-            backdrop-filter: blur(5px);
-        }
-        .sync-badge.saved { border-color: var(--success); color: var(--success); box-shadow: 0 0 10px rgba(0,242,254,0.4); }
-        .sync-badge.saving { border-color: var(--warning); color: var(--warning); }
-
-        /* BODY & PAGES */
-        .app-body {
-            flex: 1;
-            padding: 25px;
-            overflow-y: auto;
-        }
-
-        .page-view {
-            display: none;
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-        .page-view.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* DYNAMIC HERO CLOCK */
-        .dashboard-hero {
-            text-align: center;
-            padding: 25px;
-            margin-bottom: 25px;
-            background: linear-gradient(135deg, rgba(255, 105, 180, 0.2), rgba(138, 43, 226, 0.2));
-            border-radius: 22px;
-            border: 1px solid rgba(255, 192, 203, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .dashboard-date {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        .dashboard-clock {
-            font-size: 2.3rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #ff758c, #ff7eb3, #7272f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        /* MENU GRID 3D */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--card-border);
             margin-bottom: 20px;
         }
 
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 182, 193, 0.25);
-            padding: 20px 10px;
-            border-radius: 20px;
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
             color: #fff;
+            text-shadow: 0 0 10px var(--accent-pink-glow);
+        }
+
+        .brand-title i {
+            color: var(--accent-pink);
+            font-size: 26px;
+        }
+
+        .status-badge {
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 600;
-            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 10px var(--accent-green-glow);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            background: rgba(13, 6, 18, 0.6);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 10px 18px;
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .nav-btn.active {
+            background: var(--accent-pink);
+            color: #fff;
+            box-shadow: 0 0 12px var(--accent-pink-glow);
+        }
+
+        .nav-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* View Layouts */
+        .view-panel {
+            display: none;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        /* Button Back */
+        .btn-back {
+            background: #2a1838;
+            color: #fff;
+            border: 1px solid var(--card-border);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-back:hover {
+            background: #38214a;
+        }
+
+        /* --- CALENDAR SECTION --- */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-pink);
+        }
+
+        .cal-nav-btn {
+            background: #2a1838;
+            border: 1px solid var(--card-border);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cal-nav-btn:hover {
+            background: var(--accent-pink);
+        }
+
+        .calendar-days-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .day-cell {
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            min-height: 75px;
+            padding: 8px;
+            position: relative;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .day-cell.empty {
+            background: transparent;
+            border: none;
+        }
+
+        .day-number {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        /* Checkmark Animation & Blink */
+        .has-job-badge {
+            align-self: flex-end;
+            margin-top: 5px;
+            display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        .menu-btn span.icon {
-            font-size: 2rem;
-            filter: drop-shadow(0 0 8px var(--accent-glow));
-        }
-        .menu-btn:hover {
-            background: linear-gradient(135deg, var(--accent-color), #8a2be2);
-            transform: translateY(-6px) scale(1.03);
-            box-shadow: 0 12px 25px var(--accent-glow);
-        }
-
-        /* FORMS & TABLES */
-        .form-card {
-            background: rgba(10, 5, 15, 0.5);
-            padding: 22px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 182, 193, 0.2);
-            margin-bottom: 22px;
+            gap: 4px;
+            background: rgba(0, 230, 118, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 0 10px var(--accent-green-glow);
+            animation: blink-green 1.2s infinite alternate;
         }
 
-        .form-group { margin-bottom: 14px; }
+        @keyframes blink-green {
+            0% { opacity: 0.3; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 15px var(--accent-green); }
+        }
+
+        .job-count-indicator {
+            font-size: 10px;
+            color: var(--accent-pink);
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        /* --- TABEL JADWAL SECTION --- */
+        .section-box {
+            background: rgba(13, 6, 18, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
         .form-group label {
             display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            font-size: 13px;
+            color: var(--text-sub);
             margin-bottom: 6px;
+            font-weight: 600;
         }
+
         .form-control {
             width: 100%;
-            padding: 13px 16px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 182, 193, 0.25);
-            border-radius: 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            border-radius: 8px;
             color: #fff;
+            font-size: 14px;
             outline: none;
-            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 8px var(--accent-pink-glow);
         }
 
         .btn-primary {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(45deg, #ff65a3, #ff758c);
+            background: var(--accent-pink);
             border: none;
-            border-radius: 12px;
             color: #fff;
-            font-weight: bold;
-            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 6px 18px var(--accent-glow);
+            font-size: 15px;
+            box-shadow: 0 0 12px var(--accent-pink-glow);
         }
 
-        .btn-green {
-            background: linear-gradient(45deg, #11998e, #38ef7d);
-            color: #fff;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
+        .btn-primary:hover {
+            background: var(--btn-hover);
+        }
+
+        .btn-excel {
             width: 100%;
-            margin-bottom: 18px;
+            padding: 12px;
+            background: #107c41;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .data-card-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 182, 193, 0.2);
-            padding: 14px 18px;
-            border-radius: 14px;
+        .btn-excel:hover {
+            background: #0b5c30;
+        }
+
+        .job-card {
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            padding: 15px;
+            border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+        }
+
+        .job-info h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .job-info p {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        .job-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .job-amount {
+            color: var(--accent-green);
+            font-weight: 700;
+            font-size: 15px;
         }
 
         .btn-delete {
-            background: linear-gradient(45deg, #ff4e50, #f9d423);
+            background: #ff4d4d;
             color: white;
             border: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
         }
 
-        .btn-back {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 9px 18px;
+        .total-box {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: var(--input-bg);
+            border: 1px solid var(--accent-pink);
             border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 18px;
+            font-weight: 700;
+            font-size: 16px;
         }
 
-        /* PERCENTAGE METRICS STYLES */
-        .metric-card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 182, 193, 0.2);
-            padding: 18px;
-            border-radius: 16px;
+        /* --- SETTINGS SECTION (COMPLETE) --- */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .settings-card {
+            background: rgba(13, 6, 18, 0.5);
+            border: 1px solid var(--card-border);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .settings-card h3 {
+            color: var(--accent-pink);
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 8px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
         }
-        .progress-bar-bg {
-            width: 100%;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        .progress-bar-fill {
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.6s ease;
+
+        .setting-item label {
+            font-size: 13px;
+            color: #ddd;
         }
 
-        /* MODAL POPUP DIALOG */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+
+        .switch input {
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-box {
-            background: rgba(30, 15, 38, 0.95);
-            border: 1px solid rgba(255, 182, 193, 0.3);
-            padding: 28px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 320px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        }
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .btn-modal-yes {
-            flex: 1;
-            padding: 10px;
-            background: var(--danger);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .btn-modal-no {
-            flex: 1;
-            padding: 10px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
+            width: 0;
+            height: 0;
         }
 
-        /* OVERLAY LOGIN */
-        #login-overlay {
+        .slider {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 3, 15, 0.95);
-            backdrop-filter: blur(25px);
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #login-overlay.hidden { display: none; }
-        .login-box {
-            width: 90%;
-            max-width: 340px;
-            text-align: center;
-            background: rgba(30, 15, 38, 0.85);
-            padding: 30px;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #331942;
+            transition: .4s;
             border-radius: 24px;
-            border: 1px solid rgba(255, 182, 193, 0.3);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-pink);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
         }
     </style>
 </head>
 <body>
 
-    <div id="bg-gif"></div>
-    <div id="bg-layer"></div>
+    <div class="dashboard-container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand-title">
+                <i class="fa-solid fa-heart"></i>
+                <span id="app-title-display">REKA ANJANI</span>
+            </div>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Online Cloud</span>
+            </div>
+        </div>
 
-    <div class="app-container">
-        <div id="login-overlay">
-            <div class="login-box">
-                <div style="font-size: 2.5rem; margin-bottom: 10px;">👑</div>
-                <h2 style="margin-bottom: 20px; background: linear-gradient(45deg, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ADMIN BEAUTIFUL</h2>
+        <!-- NAVIGATION -->
+        <div class="nav-bar">
+            <button class="nav-btn active" onclick="switchTab('kalender')">
+                <i class="fa-solid fa-calendar-days"></i> Kalender
+            </button>
+            <button class="nav-btn" onclick="switchTab('tabel')">
+                <i class="fa-solid fa-table"></i> Tabel Jadwal
+            </button>
+            <button class="nav-btn" onclick="switchTab('pengaturan')">
+                <i class="fa-solid fa-gear"></i> Pengaturan Lengkap
+            </button>
+        </div>
+
+        <!-- VIEW 1: KALENDER -->
+        <div id="view-kalender" class="view-panel active">
+            <div class="calendar-header">
+                <button class="cal-nav-btn" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="calendar-title" id="month-year-display">Agustus 2026</div>
+                <button class="cal-nav-btn" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+            <div class="calendar-days-header">
+                <div>Ming</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+            </div>
+
+            <div class="calendar-grid" id="calendar-grid-cells">
+                <!-- Dynamic content from JS -->
+            </div>
+        </div>
+
+        <!-- VIEW 2: TABEL JADWAL -->
+        <div id="view-tabel" class="view-panel">
+            <button class="btn-excel" onclick="exportToCSV()">
+                <i class="fa-solid fa-file-excel"></i> Download Data (.CSV / Excel)
+            </button>
+
+            <div class="section-box">
                 <div class="form-group">
-                    <input type="text" id="username" class="form-control" placeholder="Username">
+                    <label><i class="fa-solid fa-calendar"></i> Tanggal Data:</label>
+                    <input type="date" id="job-date" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="password" id="password" class="form-control" placeholder="Password">
+                    <label><i class="fa-solid fa-pen-to-square"></i> Keterangan / Judul / Job:</label>
+                    <input type="text" id="job-title" class="form-control" placeholder="Contoh: PERBAUNGAN COFFE / Beli kosmetik">
                 </div>
-                <button class="btn-primary" onclick="login()">✨ Masuk Dashboard</button>
-                <div id="login-error" style="color: var(--danger); font-size: 0.85rem; margin-top: 12px; font-weight: 600;"></div>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-money-bill-wave"></i> Jumlah Nominal (Rp):</label>
+                    <input type="number" id="job-amount" class="form-control" value="0">
+                </div>
+                <button class="btn-primary" onclick="addJob()">
+                    <i class="fa-solid fa-plus"></i> Tambah Data Baru
+                </button>
+            </div>
+
+            <div id="job-list-container">
+                <!-- Job cards rendered dynamically -->
+            </div>
+
+            <div class="total-box">
+                <span>Total Keseluruhan:</span>
+                <span id="total-amount-display">Rp 0</span>
             </div>
         </div>
 
-        <div class="app-header">
-            <div class="app-title">
-                <span>💖</span> REKA ANJANI
+        <!-- VIEW 3: PENGATURAN LENGKAP -->
+        <div id="view-pengaturan" class="view-panel">
+            <h2 style="margin-bottom: 20px; font-size: 18px; color: var(--accent-pink);">
+                <i class="fa-solid fa-sliders"></i> Pengaturan Dashboard Lengkap
+            </h2>
+
+            <div class="settings-grid">
+                <!-- 1. Tampilan & Wallpaper -->
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-palette"></i> Tampilan & Background</h3>
+                    <div class="form-group">
+                        <label>URL Background GIF / Wallpaper Custom:</label>
+                        <input type="text" id="cfg-bg-url" class="form-control" placeholder="https://domain.com/animasi.gif">
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Dashboard / Judul Header:</label>
+                        <input type="text" id="cfg-app-title" class="form-control" value="REKA ANJANI">
+                    </div>
+                </div>
+
+                <!-- 2. Fitur Kalender Otomatis -->
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-calendar-check"></i> Aturan Kalender & Ceklis Hijau</h3>
+                    <div class="setting-item">
+                        <label>Otomatis Tampilkan Ceklis Hijau Ketap-Ketip jika ada Job</label>
+                        <label class="switch">
+                            <input type="checkbox" id="cfg-enable-blink" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>Tampilkan Total Rincian Nominal di Sel Tanggal</label>
+                        <label class="switch">
+                            <input type="checkbox" id="cfg-show-amount-cal" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3. Format Mata Uang & Notifikasi -->
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-bell"></i> General & Notifikasi</h3>
+                    <div class="form-group">
+                        <label>Mata Uang Default:</label>
+                        <select id="cfg-currency" class="form-control">
+                            <option value="IDR">Rupiah (Rp)</option>
+                            <option value="USD">US Dollar ($)</option>
+                            <option value="MYR">Ringgit (RM)</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>Notifikasi Suara Saat Add Job / Simpan Data</label>
+                        <label class="switch">
+                            <input type="checkbox" id="cfg-sound-effect" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <button class="btn-primary" onclick="saveSettings()">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Pengaturan
+                </button>
             </div>
-            <div id="sync-indicator" class="sync-badge saving">⏳ Memuat Cloud...</div>
         </div>
 
-        <div class="app-body">
-            
-            <div id="page-dashboard" class="page-view active">
-                <div class="dashboard-hero">
-                    <div id="dashboard-date-text" class="dashboard-date">-</div>
-                    <div id="dashboard-clock-text" class="dashboard-clock">00:00:00 WIB</div>
-                </div>
-
-                <div class="menu-grid">
-                    <button class="menu-btn" onclick="navigateTo('pemasukkan')">
-                        <span class="icon">💎</span>
-                        <span>Pemasukkan</span>
-                    </button>
-                    <button class="menu-btn" onclick="navigateTo('pengeluaran')">
-                        <span class="icon">🛍️</span>
-                        <span>Pengeluaran</span>
-                    </button>
-                    <button class="menu-btn" onclick="navigateTo('simpanan')">
-                        <span class="icon">👑</span>
-                        <span>Simpanan</span>
-                    </button>
-                    <button class="menu-btn" onclick="navigateTo('tabungan')">
-                        <span class="icon">🏦</span>
-                        <span>Tabungan</span>
-                    </button>
-                    <button class="menu-btn" onclick="navigateTo('persentase')">
-                        <span class="icon">📊</span>
-                        <span>Persentase</span>
-                    </button>
-                    <button class="menu-btn" onclick="navigateTo('jadwal')">
-                        <span class="icon">🌸</span>
-                        <span>Jadwal Job</span>
-                    </button>
-                    <button class="menu-btn" onclick="navigateTo('utang')">
-                        <span class="icon">🎀</span>
-                        <span>Utang / Piutang</span>
-                    </button>
-                    <button class="menu-btn" onclick="navigateTo('calendar')">
-                        <span class="icon">🗓️</span>
-                        <span>Kalender</span>
-                    </button>
-                    <button class="menu-btn" onclick="navigateTo('settings')">
-                        <span class="icon">✨</span>
-                        <span>Pengaturan</span>
-                    </button>
-                    <button class="menu-btn" onclick="logout()" style="border-color: rgba(255, 78, 80, 0.4);">
-                        <span class="icon">🔒</span>
-                        <span>Keluar</span>
-                    </button>
-                </div>
-            </div>
-
-            <div id="page-data" class="page-view">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
-                    <div id="current-page-title" style="font-weight: 700; text-transform: uppercase; color: var(--accent-color);">Tabel Data</div>
-                </div>
-
-                <button class="btn-green" onclick="downloadCSVData()">📊 Download Data (.CSV / Excel)</button>
-
-                <div class="form-card">
-                    <div class="form-group">
-                        <label>📅 Tanggal Data:</label>
-                        <input type="date" id="input-date" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>📝 Keterangan / Judul / Job:</label>
-                        <input type="text" id="input-desc" class="form-control" placeholder="Contoh: Pembayaran Job / Beli kosmetik">
-                    </div>
-                    <div class="form-group">
-                        <label>💰 Jumlah Nominal (Rp):</label>
-                        <input type="number" id="input-amount" class="form-control" placeholder="0">
-                    </div>
-                    <button class="btn-primary" onclick="addDataItem()">➕ Tambah Data Baru</button>
-                </div>
-
-                <div id="data-list-container"></div>
-
-                <div style="margin-top: 18px; padding: 18px; background: rgba(0,0,0,0.5); border-radius: 14px; display: flex; justify-content: space-between; font-weight: bold; border: 1px solid rgba(255,182,193,0.2);">
-                    <span>Total Keseluruhan:</span>
-                    <span id="total-amount-val" style="color: var(--success);">Rp 0</span>
-                </div>
-            </div>
-
-            <div id="page-persentase" class="page-view">
-                <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
-                <h3 style="color: var(--accent-color); margin-bottom: 20px;">📊 Tabel Persentase Keuangan</h3>
-                
-                <div id="persentase-metrics-container"></div>
-            </div>
-
-            <div id="page-calendar" class="page-view">
-                <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <button class="btn-back" onclick="changeMonth(-1)" style="margin:0;">◀</button>
-                    <h3 id="calendar-month-year" style="color: var(--accent-color);">Bulan Tahun</h3>
-                    <button class="btn-back" onclick="changeMonth(1)" style="margin:0;">▶</button>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 15px;" id="calendar-days-container"></div>
-            </div>
-
-            <div id="page-settings" class="page-view">
-                <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
-                <h3 style="color: var(--accent-color); margin-bottom: 15px;">Pengaturan Dashboard</h3>
-                <div class="form-card">
-                    <div class="form-group">
-                        <label>URL Background GIF/Wallpaper Custom:</label>
-                        <input type="text" id="wallpaper-url-input" class="form-control" placeholder="https://domain.com/animasi.gif">
-                    </div>
-                    <button class="btn-primary" onclick="confirmSaveSettings()">💾 Simpan Pengaturan</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="delete-modal" class="modal-overlay">
-        <div class="modal-box">
-            <div style="font-size: 2.5rem; margin-bottom: 10px;">⚠️</div>
-            <h3 style="margin-bottom: 8px; color: #fff;">Konfirmasi Hapus</h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted);">Apakah Anda yakin ingin menghapus data ini?</p>
-            <div class="modal-actions">
-                <button class="btn-modal-yes" onclick="executeDelete()">YA, Hapus</button>
-                <button class="btn-modal-no" onclick="closeDeleteModal()">TIDAK</button>
-            </div>
-        </div>
     </div>
 
     <script>
-        const ADMIN_USER = "admin";
-        const ADMIN_PASS = "admin123";
+        // DATA INITIALIZATION
+        let jobs = JSON.parse(localStorage.getItem('reka_jobs')) || [
+            { id: 1, date: '2026-09-04', title: 'PERBAUNGAN COFFE', amount: 1000000 }
+        ];
 
-        // JSONBIN CREDENTIALS (SAMA TERUS)
-        const JSONBIN_BIN_ID = "6a9a2f36f5f4af5e29681e6f";
-        const JSONBIN_API_KEY = "$2a$10$RToIDZQyfCwAmmFIgopn6O1Nf2lOWMZy5cE7zwXLMHjagMg0EP5I.";
-        const JSONBIN_ENDPOINT = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
-
-        let appData = {
-            settings: { themeId: 1, wallpaper: "", brightness: 70 },
-            pemasukkan: [],
-            pengeluaran: [],
-            jadwal: [],
-            utang: [],
-            simpanan: [],
-            tabungan: [] // FITUR TABUNGAN BARU
+        let settings = JSON.parse(localStorage.getItem('reka_settings')) || {
+            bgUrl: '',
+            appTitle: 'REKA ANJANI',
+            enableBlink: true,
+            showAmountCal: true,
+            currency: 'IDR',
+            soundEffect: true
         };
 
-        let activeCategory = 'pemasukkan';
-        let currentCalendarDate = new Date();
-        let targetDeleteId = null;
+        let currentYear = 2026;
+        let currentMonth = 8; // September (0-indexed: 8 = Sep)
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('is_admin_logged_in') === 'true') {
-                document.getElementById('login-overlay').classList.add('hidden');
-            }
-            document.getElementById('input-date').valueAsDate = new Date();
-            startDashboardClock();
-            loadLocalBackup();
-            loadOnlineData();
-        });
+        // ON LOAD
+        window.onload = function() {
+            // Set today in input date
+            document.getElementById('job-date').value = '2026-09-04';
+            applySettings();
+            renderCalendar();
+            renderJobList();
+        };
 
-        function startDashboardClock() {
-            setInterval(() => {
-                const now = new Date();
-                const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-                const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                document.getElementById('dashboard-date-text').innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-                document.getElementById('dashboard-clock-text').innerText = `Jam: ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} WIB`;
-            }, 1000);
-        }
+        // NAVIGATION SWITCH
+        function switchTab(tabName) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
 
-        function setSyncStatus(text, statusClass) {
-            const el = document.getElementById('sync-indicator');
-            if(el) {
-                el.innerText = text;
-                el.className = `sync-badge ${statusClass}`;
+            if(tabName === 'kalender') {
+                document.getElementById('view-kalender').classList.add('active');
+                event.currentTarget.classList.add('active');
+                renderCalendar();
+            } else if(tabName === 'tabel') {
+                document.getElementById('view-tabel').classList.add('active');
+                event.currentTarget.classList.add('active');
+            } else if(tabName === 'pengaturan') {
+                document.getElementById('view-pengaturan').classList.add('active');
+                event.currentTarget.classList.add('active');
             }
         }
 
-        function saveLocalBackup() {
-            localStorage.setItem('catatan_data_app_db_v3', JSON.stringify(appData));
-        }
+        // CALENDAR RENDER ENGINE
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid-cells');
+            grid.innerHTML = '';
 
-        function loadLocalBackup() {
-            const local = localStorage.getItem('catatan_data_app_db_v3');
-            if (local) {
-                try {
-                    appData = JSON.parse(local);
-                    if (!appData.tabungan) appData.tabungan = [];
-                } catch(e) {}
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            document.getElementById('month-year-display').innerText = `${monthNames[currentMonth]} ${currentYear}`;
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // Empty slots for previous month padding
+            for(let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'day-cell empty';
+                grid.appendChild(emptyCell);
+            }
+
+            // Fill actual month days
+            for(let day = 1; day <= daysInMonth; day++) {
+                const formattedDay = day < 10 ? '0' + day : day;
+                const formattedMonth = (currentMonth + 1) < 10 ? '0' + (currentMonth + 1) : (currentMonth + 1);
+                const dateStr = `${currentYear}-${formattedMonth}-${formattedDay}`;
+
+                const cell = document.createElement('div');
+                cell.className = 'day-cell';
+
+                // Check if jobs exist for this date
+                const jobsForDate = jobs.filter(j => j.date === dateStr);
+                const hasJobs = jobsForDate.length > 0;
+
+                let badgeHTML = '';
+                if(hasJobs && settings.enableBlink) {
+                    badgeHTML = `<div class="has-job-badge" title="${jobsForDate.length} Job Terdaftar"><i class="fa-solid fa-check"></i></div>`;
+                }
+
+                let infoHTML = '';
+                if(hasJobs && settings.showAmountCal) {
+                    const totalForDay = jobsForDate.reduce((sum, item) => sum + Number(item.amount), 0);
+                    infoHTML = `<div class="job-count-indicator">Rp ${totalForDay.toLocaleString('id-ID')}</div>`;
+                }
+
+                cell.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <span class="day-number">${day}</span>
+                        ${badgeHTML}
+                    </div>
+                    ${infoHTML}
+                `;
+
+                grid.appendChild(cell);
             }
         }
 
-        async function loadOnlineData() {
-            setSyncStatus("⏳ Sinkronisasi Cloud...", "saving");
-            try {
-                const res = await fetch(`${JSONBIN_ENDPOINT}/latest`, {
-                    method: 'GET',
-                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
-                });
-
-                if (res.ok) {
-                    const result = await res.json();
-                    if (result.record && typeof result.record === 'object') {
-                        appData = result.record;
-                        if (!appData.tabungan) appData.tabungan = [];
-                        saveLocalBackup();
-                        setSyncStatus("🟢 Online Cloud", "saved");
-                    }
-                } else { setSyncStatus("🟢 Online Cloud", "saved"); }
-            } catch (e) { setSyncStatus("🟢 Online Cloud", "saved"); }
-        }
-
-        async function saveOnlineData() {
-            saveLocalBackup();
-            setSyncStatus("⏳ Menyimpan...", "saving");
-            try {
-                const res = await fetch(JSONBIN_ENDPOINT, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_API_KEY
-                    },
-                    body: JSON.stringify(appData)
-                });
-                if (res.ok) setSyncStatus("🟢 Tersimpan Online", "saved");
-            } catch (e) { setSyncStatus("🟡 Tersimpan Lokal", "saved"); }
-        }
-
-        function login() {
-            if (document.getElementById('username').value === ADMIN_USER && document.getElementById('password').value === ADMIN_PASS) {
-                localStorage.setItem('is_admin_logged_in', 'true');
-                document.getElementById('login-overlay').classList.add('hidden');
-                loadOnlineData();
-            } else {
-                document.getElementById('login-error').innerText = "Username/Password Salah!";
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if(currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if(currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
             }
+            renderCalendar();
         }
 
-        function logout() {
-            localStorage.removeItem('is_admin_logged_in');
-            document.getElementById('login-overlay').classList.remove('hidden');
-        }
-
-        function navigateTo(targetPage) {
-            document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
-
-            if (targetPage === 'dashboard') {
-                document.getElementById('page-dashboard').classList.add('active');
-            } else if (targetPage === 'persentase') {
-                document.getElementById('page-persentase').classList.add('active');
-                renderPersentaseView();
-            } else if (targetPage === 'calendar') {
-                document.getElementById('page-calendar').classList.add('active');
-                renderCalendarView();
-            } else if (targetPage === 'settings') {
-                document.getElementById('page-settings').classList.add('active');
-            } else {
-                activeCategory = targetPage;
-                document.getElementById('page-data').classList.add('active');
-                document.getElementById('current-page-title').innerText = "Tabel " + targetPage.toUpperCase();
-                renderCategoryView();
-            }
-        }
-
-        function addDataItem() {
-            const date = document.getElementById('input-date').value;
-            const desc = document.getElementById('input-desc').value.trim();
-            const amount = parseFloat(document.getElementById('input-amount').value) || 0;
-
-            if (!date || !desc) {
-                alert("Harap isi tanggal dan keterangan!");
-                return;
-            }
-
-            if (!appData[activeCategory]) appData[activeCategory] = [];
-
-            appData[activeCategory].push({ id: Date.now(), date, desc, amount });
-            document.getElementById('input-desc').value = '';
-            document.getElementById('input-amount').value = '';
-
-            renderCategoryView();
-            saveOnlineData();
-        }
-
-        /* POPUP CONFIRMATION DELETE */
-        function openDeleteModal(id) {
-            targetDeleteId = id;
-            document.getElementById('delete-modal').classList.add('active');
-        }
-
-        function closeDeleteModal() {
-            targetDeleteId = null;
-            document.getElementById('delete-modal').classList.remove('active');
-        }
-
-        function executeDelete() {
-            if (targetDeleteId !== null) {
-                appData[activeCategory] = appData[activeCategory].filter(x => x.id !== targetDeleteId);
-                renderCategoryView();
-                saveOnlineData();
-                closeDeleteModal();
-            }
-        }
-
-        function renderCategoryView() {
-            const container = document.getElementById('data-list-container');
+        // JOB MANAGEMENT
+        function renderJobList() {
+            const container = document.getElementById('job-list-container');
             container.innerHTML = '';
+
             let total = 0;
 
-            const items = appData[activeCategory] || [];
-
-            if (items.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 25px; color: var(--text-muted);">Belum ada data di tabel ini.</div>`;
-            } else {
-                items.forEach(item => {
-                    total += item.amount;
-                    const card = document.createElement('div');
-                    card.className = 'data-card-item';
-                    card.innerHTML = `
-                        <div>
-                            <div style="font-weight:600; font-size:1rem;">${item.desc}</div>
-                            <div style="font-size:0.8rem; color:var(--text-muted);">📅 ${item.date}</div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <div style="font-weight:700; color:var(--success);">Rp ${item.amount.toLocaleString('id-ID')}</div>
-                            <button class="btn-delete" onclick="openDeleteModal(${item.id})">Hapus</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            }
-
-            document.getElementById('total-amount-val').innerText = `Rp ${total.toLocaleString('id-ID')}`;
-        }
-
-        /* METODE PERSENTASE KEUANGAN */
-        function renderPersentaseView() {
-            const container = document.getElementById('persentase-metrics-container');
-            container.innerHTML = '';
-
-            const sum = arr => (arr || []).reduce((acc, curr) => acc + (curr.amount || 0), 0);
-
-            const totPemasukkan = sum(appData.pemasukkan);
-            const totPengeluaran = sum(appData.pengeluaran);
-            const totSimpanan = sum(appData.simpanan);
-            const totTabungan = sum(appData.tabungan);
-
-            const grandTotal = totPemasukkan || 1; // Mencegah Divide by Zero
-
-            const pctPengeluaran = ((totPengeluaran / grandTotal) * 100).toFixed(1);
-            const pctSimpanan = ((totSimpanan / grandTotal) * 100).toFixed(1);
-            const pctTabungan = ((totTabungan / grandTotal) * 100).toFixed(1);
-
-            const metrics = [
-                { title: '💎 Total Pemasukkan (Acuan 100%)', val: totPemasukkan, pct: 100, color: '#00f2fe' },
-                { title: '🛍️ Rasio Pengeluaran', val: totPengeluaran, pct: pctPengeluaran, color: '#ff4e50' },
-                { title: '👑 Rasio Simpanan', val: totSimpanan, pct: pctSimpanan, color: '#ffd700' },
-                { title: '🏦 Rasio Tabungan', val: totTabungan, pct: pctTabungan, color: '#38ef7d' }
-            ];
-
-            metrics.forEach(m => {
+            jobs.forEach((job) => {
+                total += Number(job.amount);
                 const card = document.createElement('div');
-                card.className = 'metric-card';
+                card.className = 'job-card';
                 card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; font-weight:600;">
-                        <span>${m.title}</span>
-                        <span style="color:${m.color}">${m.pct}% (Rp ${m.val.toLocaleString('id-ID')})</span>
+                    <div class="job-info">
+                        <h4>${job.title}</h4>
+                        <p><i class="fa-solid fa-calendar"></i> ${job.date}</p>
                     </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: ${Math.min(m.pct, 100)}%; background: ${m.color};"></div>
+                    <div class="job-right">
+                        <span class="job-amount">Rp ${Number(job.amount).toLocaleString('id-ID')}</span>
+                        <button class="btn-delete" onclick="deleteJob(${job.id})">Hapus</button>
                     </div>
                 `;
                 container.appendChild(card);
             });
+
+            document.getElementById('total-amount-display').innerText = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
-        function renderCalendarView() {
-            const container = document.getElementById('calendar-days-container');
-            const label = document.getElementById('calendar-month-year');
-            container.innerHTML = '';
+        function addJob() {
+            const date = document.getElementById('job-date').value;
+            const title = document.getElementById('job-title').value;
+            const amount = document.getElementById('job-amount').value;
 
-            const year = currentCalendarDate.getFullYear();
-            const month = currentCalendarDate.getMonth();
-            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-
-            label.innerText = `${monthNames[month]} ${year}`;
-
-            const firstDay = new Date(year, month, 1).getDay();
-            const totalDays = new Date(year, month + 1, 0).getDate();
-
-            for (let i = 0; i < firstDay; i++) container.appendChild(document.createElement('div'));
-
-            for (let day = 1; day <= totalDays; day++) {
-                const cell = document.createElement('div');
-                cell.style.background = 'rgba(0,0,0,0.3)';
-                cell.style.padding = '8px';
-                cell.style.borderRadius = '8px';
-                cell.style.minHeight = '45px';
-                cell.innerText = day;
-                container.appendChild(cell);
+            if(!date || !title) {
+                alert('Mohon isi tanggal dan keterangan job!');
+                return;
             }
+
+            const newJob = {
+                id: Date.now(),
+                date: date,
+                title: title,
+                amount: parseFloat(amount) || 0
+            };
+
+            jobs.push(newJob);
+            localStorage.setItem('reka_jobs', JSON.stringify(jobs));
+
+            document.getElementById('job-title').value = '';
+            document.getElementById('job-amount').value = '0';
+
+            renderJobList();
+            renderCalendar();
+            alert('Data job berhasil ditambahkan!');
         }
 
-        function changeMonth(step) {
-            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + step);
-            renderCalendarView();
+        function deleteJob(id) {
+            jobs = jobs.filter(j => j.id !== id);
+            localStorage.setItem('reka_jobs', JSON.stringify(jobs));
+            renderJobList();
+            renderCalendar();
         }
 
-        function downloadCSVData() {
-            const items = appData[activeCategory] || [];
-            let csv = "Tanggal,Keterangan,Nominal\n";
-            items.forEach(r => csv += `"${r.date}","${r.desc}","${r.amount}"\n`);
+        // SETTINGS ENGINE
+        function saveSettings() {
+            settings.bgUrl = document.getElementById('cfg-bg-url').value;
+            settings.appTitle = document.getElementById('cfg-app-title').value;
+            settings.enableBlink = document.getElementById('cfg-enable-blink').checked;
+            settings.showAmountCal = document.getElementById('cfg-show-amount-cal').checked;
+            settings.currency = document.getElementById('cfg-currency').value;
+            settings.soundEffect = document.getElementById('cfg-sound-effect').checked;
+
+            localStorage.setItem('reka_settings', JSON.stringify(settings));
+            applySettings();
+            alert('Pengaturan berhasil disimpan!');
+        }
+
+        function applySettings() {
+            document.getElementById('app-title-display').innerText = settings.appTitle || 'REKA ANJANI';
+            
+            if(settings.bgUrl) {
+                document.body.style.backgroundImage = `url('${settings.bgUrl}')`;
+            } else {
+                document.body.style.backgroundImage = 'none';
+            }
+
+            document.getElementById('cfg-bg-url').value = settings.bgUrl || '';
+            document.getElementById('cfg-app-title').value = settings.appTitle || 'REKA ANJANI';
+            document.getElementById('cfg-enable-blink').checked = settings.enableBlink;
+            document.getElementById('cfg-show-amount-cal').checked = settings.showAmountCal;
+            document.getElementById('cfg-currency').value = settings.currency;
+            document.getElementById('cfg-sound-effect').checked = settings.soundEffect;
+        }
+
+        // EXPORT TO CSV
+        function exportToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,ID,Tanggal,Keterangan / Job,Nominal
+";
+            jobs.forEach(j => {
+                csvContent += `${j.id},${j.date},"${j.title}",${j.amount}
+`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
-            link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
-            link.download = `Data_${activeCategory.toUpperCase()}.csv`;
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Tabel_Jadwal_RekaAnjani.csv");
+            document.body.appendChild(link);
             link.click();
-        }
-
-        function confirmSaveSettings() {
-            alert("✅ Pengaturan Berhasil Disimpan!");
+            document.body.removeChild(link);
         }
     </script>
 </body>
