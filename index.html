@@ -2,409 +2,452 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CATATAN DATA - LUXURY FEMININE DASHBOARD ONLINE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catatan Data Premium Dashboard</title>
     <style>
         :root {
-            --bg-base: #0f0a15;
-            --accent-color: #ff65a3;
-            --accent-glow: rgba(255, 101, 163, 0.45);
-            --text-color: #ffffff;
-            --text-muted: #e2b6d5;
+            --bg-base: #110d18;
+            --accent-color: #ff6b8b;
+            --accent-glow: rgba(255, 107, 139, 0.47);
+            --card-bg: rgba(35, 22, 45, 0.85);
+            --text-muted: #f3c2d8;
             --success: #00ff88;
-            --danger: #ff477e;
-            --card-bg: rgba(30, 18, 41, 0.85);
-            --glass-border: rgba(255, 182, 217, 0.25);
-            --glass-blur: 18px;
-            --wallpaper-brightness: 0.7;
+            --danger: #ff4757;
+            --warning: #ffa500;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-        
-        body { 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
             background-color: var(--bg-base);
-            color: var(--text-color); 
-            height: 100vh; 
-            overflow: hidden; 
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: relative;
-            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
         }
 
         #bg-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-repeat: no-repeat;
-            background-position: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-size: cover;
-            opacity: var(--wallpaper-brightness);
-            transition: background-image 0.5s ease, opacity 0.3s ease;
+            background-position: center;
             z-index: 1;
+            opacity: var(--wallpaper-brightness, 0.7);
+            transition: opacity 0.3s ease;
         }
 
         .app-container {
             position: relative;
             z-index: 2;
             width: 100%;
-            height: 100%;
+            max-width: 900px;
+            min-height: 90vh;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            margin: 20px;
         }
 
-        #login-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 5, 15, 0.95); backdrop-filter: blur(20px);
-            display: flex; justify-content: center; align-items: center; z-index: 9999;
-            padding: 20px;
-        }
-        .login-box {
-            background: var(--card-bg); backdrop-filter: blur(25px);
-            border: 2px solid var(--accent-glow); padding: 35px 25px; border-radius: 24px; 
-            width: 100%; max-width: 360px; text-align: center;
-            box-shadow: 0 0 35px var(--accent-glow);
-            animation: pulseGlow 4s infinite alternate;
-        }
-        .login-box h2 { margin-bottom: 20px; color: #fff; font-size: 1.5rem; letter-spacing: 1px; text-shadow: 0 0 10px var(--accent-color); }
-        .login-box input {
-            width: 100%; padding: 12px 15px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--glass-border);
-            background: rgba(0, 0, 0, 0.6); color: #fff; outline: none; font-size: 0.95rem;
-        }
-        .login-box button {
-            width: 100%; padding: 12px; margin-top: 15px; border: none; border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent-color), #ff9ebb); color: #fff; font-weight: bold; cursor: pointer; font-size: 1rem;
-            box-shadow: 0 4px 18px var(--accent-glow); transition: 0.3s;
+        /* HEADER */
+        .app-header {
+            padding: 20px 25px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .top-navbar {
-            padding: 15px 20px;
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            border-bottom: 1px solid var(--glass-border);
-            display: flex; justify-content: space-between; align-items: center;
+        .app-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--accent-glow);
         }
-        .brand-title { font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; color: #fff; text-shadow: 0 0 12px var(--accent-color); }
-        
+
         .sync-badge {
-            font-size: 0.75rem; padding: 5px 12px; border-radius: 20px;
-            background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);
-            font-weight: bold;
-        }
-        .sync-badge.saving { color: #ffc107; border-color: #ffc107; }
-        .sync-badge.saved { color: var(--success); border-color: var(--success); }
-        .sync-badge.error { color: var(--danger); border-color: var(--danger); }
-
-        .content-body {
-            flex: 1; padding: 20px; overflow-y: auto; position: relative;
-        }
-
-        .date-display-box {
-            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border); border-radius: 16px;
-            padding: 12px 20px; text-align: center; max-width: 900px; margin: 0 auto 18px auto;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .date-day { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); }
-        .date-time { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            max-width: 900px;
-            margin: 0 auto;
-            padding-bottom: 30px;
-        }
-
-        .menu-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
+            font-size: 0.75rem;
+            padding: 6px 12px;
             border-radius: 20px;
-            padding: 22px 12px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .sync-badge.saved { border-color: var(--success); color: var(--success); }
+        .sync-badge.saving { border-color: var(--warning); color: var(--warning); }
+        .sync-badge.error { border-color: var(--danger); color: var(--danger); }
+
+        /* BODY CONTENT */
+        .app-body {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .page-view {
+            display: none;
+        }
+        .page-view.active {
+            display: block;
+        }
+
+        /* DASHBOARD CLOCK & MENU */
+        .dashboard-hero {
             text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 10px;
+            padding: 20px 0;
+            margin-bottom: 25px;
         }
-
-        .menu-card:hover, .menu-card:active {
-            transform: translateY(-5px) scale(1.02);
-            border-color: var(--accent-color);
-            box-shadow: 0 12px 30px var(--accent-glow);
+        .dashboard-date {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
         }
-
-        .card-icon {
-            width: 52px; height: 52px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, rgba(255,101,163,0.3), rgba(255,182,217,0.5));
-            display: flex; align-items: center; justify-content: center;
+        .dashboard-clock {
             font-size: 1.8rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: bold;
+            color: var(--accent-color);
+            text-shadow: 0 0 15px var(--accent-glow);
         }
 
-        .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; }
-
-        .page-view { display: none; max-width: 800px; margin: 0 auto; width: 100%; }
-        .page-view.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .btn-back {
-            background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border); color: #fff;
-            padding: 8px 16px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; font-weight: bold;
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .calendar-box {
-            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 10px;
+            border-radius: 15px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
-        .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .calendar-controls button {
-            background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: #fff;
-            padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold;
-        }
-        .month-year-label { font-size: 1.1rem; font-weight: bold; color: #fff; }
-
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
-        .day-header { font-weight: bold; font-size: 0.8rem; color: var(--text-muted); padding-bottom: 8px; }
-        .calendar-day-cell {
-            background: rgba(0, 0, 0, 0.35); border: 1px solid var(--glass-border);
-            border-radius: 12px; aspect-ratio: 1; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold;
-        }
-        .calendar-day-cell.has-job {
-            border-color: var(--success); background: rgba(0, 255, 136, 0.15); box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        .menu-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--accent-glow);
         }
 
-        .btn-download {
-            background: linear-gradient(135deg, #00c853, #64dd17); color: #fff; border: none;
-            padding: 12px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; width: 100%;
+        /* FORM INPUTS & CARDS */
+        .form-card {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
         }
 
-        .form-box {
-            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; margin-bottom: 20px;
-            display: flex; flex-direction: column; gap: 10px;
+        .form-group {
+            margin-bottom: 12px;
         }
-        .form-box input {
-            padding: 12px; border-radius: 10px; border: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.5); color: #fff; outline: none; font-size: 0.9rem;
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
         }
-        .btn-action {
-            padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;
-            background: linear-gradient(135deg, var(--accent-color), #ff9ebb); color: #fff; font-size: 0.9rem;
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+        }
+        .form-control:focus {
+            border-color: var(--accent-color);
         }
 
-        .data-list-vertical { display: flex; flex-direction: column; gap: 10px; min-height: 50px; }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .btn-green {
+            background: #2ed573;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
         .data-card-item {
-            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px 16px;
-            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
-        .data-info { display: flex; flex-direction: column; gap: 4px; }
-        .data-primary { font-weight: bold; font-size: 0.95rem; color: #fff; }
-        .data-secondary { font-size: 0.8rem; color: var(--text-muted); }
-        .data-amount { font-weight: bold; color: var(--success); font-size: 0.95rem; }
+        .data-info .data-primary { font-weight: bold; font-size: 0.95rem; }
+        .data-info .data-secondary { font-size: 0.75rem; color: var(--text-muted); }
+        .data-amount { font-weight: bold; color: var(--success); }
 
         .btn-delete {
-            background: var(--danger); border: none; color: #fff; padding: 6px 12px;
-            border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
         }
 
-        .total-banner {
-            margin-top: 20px; padding: 15px; background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border); border-radius: 14px; text-align: right;
-            font-size: 1.1rem; font-weight: bold;
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 15px;
         }
 
-        .settings-card {
-            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border); padding: 20px; border-radius: 18px;
-            display: flex; flex-direction: column; gap: 18px;
+        /* CALENDAR */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 15px;
         }
-        .theme-grid-container {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 10px; max-height: 200px; overflow-y: auto; padding-right: 5px;
+        .calendar-day-cell {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            min-height: 50px;
+            padding: 5px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+        .calendar-day-cell.has-job {
+            border-color: var(--success);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        /* THEME GRID */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
         }
         .theme-option-card {
-            border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px;
-            text-align: center; cursor: pointer; font-size: 0.75rem; font-weight: bold;
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
             background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.75rem;
         }
-        .theme-option-card.selected { border-color: var(--accent-color); box-shadow: 0 0 12px var(--accent-glow); }
-        .theme-color-dots { display: flex; gap: 4px; }
-        .color-dot { width: 14px; height: 14px; border-radius: 50%; }
+        .theme-option-card.selected {
+            border-color: var(--accent-color);
+            background: rgba(255,255,255,0.1);
+        }
+        .theme-color-dots {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        .color-dot { width: 12px; height: 12px; border-radius: 50%; }
 
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 15px var(--accent-glow); } 100% { box-shadow: 0 0 35px var(--accent-glow); } }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        .hidden { display: none !important; }
+        /* OVERLAY LOGIN */
+        #login-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 5, 15, 0.95);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        #login-overlay.hidden { display: none; }
+        .login-box {
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
     <div id="bg-layer"></div>
 
-    <div id="login-overlay">
-        <div class="login-box">
-            <h2>LOGIN ADMIN</h2>
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
-            <button onclick="login()">MASUK DASHBOARD</button>
-            <p id="login-error" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px;"></p>
-        </div>
-    </div>
-
     <div class="app-container">
-        <div class="top-navbar">
-            <div class="brand-title">CATATAN DATA</div>
+        <!-- LOGIN OVERLAY -->
+        <div id="login-overlay">
+            <div class="login-box">
+                <h2 style="margin-bottom: 20px; color: var(--accent-color);">ADMIN LOGIN</h2>
+                <div class="form-group">
+                    <input type="text" id="username" class="form-control" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" class="form-control" placeholder="Password">
+                </div>
+                <button class="btn-primary" onclick="login()">Masuk</button>
+                <div id="login-error" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <!-- HEADER -->
+        <div class="app-header">
+            <div class="app-title">CATATAN DATA</div>
             <div id="sync-indicator" class="sync-badge saving">⏳ Memuat Cloud...</div>
         </div>
 
-        <div class="content-body">
-
+        <!-- BODY PAGES -->
+        <div class="app-body">
+            
+            <!-- PAGE: DASHBOARD -->
             <div id="page-dashboard" class="page-view active">
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <h2 style="font-size: 1.35rem; font-weight: 700;">Selamat Datang, Admin</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Pilih menu di bawah untuk mengelola data</p>
+                <div class="dashboard-hero">
+                    <div id="dashboard-date-text" class="dashboard-date">-</div>
+                    <div id="dashboard-clock-text" class="dashboard-clock">00:00:00 WIB</div>
                 </div>
 
-                <div class="date-display-box">
-                    <div class="date-day" id="dashboard-date-text">Selasa, 1 Januari 2026</div>
-                    <div class="date-time" id="dashboard-clock-text">Jam: 00:00:00 WIB</div>
-                </div>
-
-                <div class="dashboard-grid">
-                    <div class="menu-card" onclick="navigateTo('pemasukkan')">
-                        <div class="card-icon">💰</div>
-                        <div class="card-title">Tabel Pemasukkan</div>
-                    </div>
-                    <div class="menu-card" onclick="navigateTo('pengeluaran')">
-                        <div class="card-icon">💸</div>
-                        <div class="card-title">Tabel Pengeluaran</div>
-                    </div>
-                    <div class="menu-card" onclick="navigateTo('jadwal')">
-                        <div class="card-icon">📝</div>
-                        <div class="card-title">Jadwal Job</div>
-                    </div>
-                    <div class="menu-card" onclick="navigateTo('calendar')">
-                        <div class="card-icon">📅</div>
-                        <div class="card-title">Kalender Job</div>
-                    </div>
-                    <div class="menu-card" onclick="navigateTo('utang')">
-                        <div class="card-icon">🤝</div>
-                        <div class="card-title">Utang / Piutang</div>
-                    </div>
-                    <div class="menu-card" onclick="navigateTo('simpanan')">
-                        <div class="card-icon">🏦</div>
-                        <div class="card-title">Data Simpanan</div>
-                    </div>
-                    <div class="menu-card" onclick="navigateTo('settings')">
-                        <div class="card-icon">🎀</div>
-                        <div class="card-title">Pengaturan Tema (50)</div>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 10px;">
-                    <button onclick="logout()" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 20px; border-radius: 12px; font-weight: bold; cursor: pointer;">Logout Admin</button>
+                <div class="menu-grid">
+                    <button class="menu-btn" onclick="navigateTo('pemasukkan')">📥 Pemasukkan</button>
+                    <button class="menu-btn" onclick="navigateTo('pengeluaran')">📤 Pengeluaran</button>
+                    <button class="menu-btn" onclick="navigateTo('jadwal')">📅 Jadwal</button>
+                    <button class="menu-btn" onclick="navigateTo('utang')">💳 Utang / Piutang</button>
+                    <button class="menu-btn" onclick="navigateTo('simpanan')">🏦 Simpanan</button>
+                    <button class="menu-btn" onclick="navigateTo('calendar')">🗓️ Kalender</button>
+                    <button class="menu-btn" onclick="navigateTo('settings')">⚙️ Pengaturan</button>
+                    <button class="menu-btn" onclick="logout()" style="border-color: var(--danger);">🔒 Keluar</button>
                 </div>
             </div>
 
-            <div id="page-calendar" class="page-view">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
-                    <h3 style="font-size: 1.1rem;">Kalender Job Terisi</h3>
-                </div>
-
-                <div class="calendar-box">
-                    <div class="calendar-controls">
-                        <button onclick="changeMonth(-1)">◀ Prev</button>
-                        <div class="month-year-label" id="calendar-month-year">Januari 2026</div>
-                        <button onclick="changeMonth(1)">Next ▶</button>
-                    </div>
-
-                    <div class="calendar-grid">
-                        <div class="day-header">Min</div>
-                        <div class="day-header">Sen</div>
-                        <div class="day-header">Sel</div>
-                        <div class="day-header">Rab</div>
-                        <div class="day-header">Kam</div>
-                        <div class="day-header">Jum</div>
-                        <div class="day-header">Sab</div>
-                    </div>
-
-                    <div class="calendar-grid" id="calendar-days-container" style="margin-top: 5px;"></div>
-                </div>
-            </div>
-
+            <!-- PAGE: DATA VIEWER (SHARED FOR CATEGORIES) -->
             <div id="page-data" class="page-view">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
-                    <h3 id="current-page-title" style="font-size: 1.1rem;">Tabel Data</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
+                    <div id="current-page-title" style="font-weight: bold; text-transform: uppercase;">Tabel Data</div>
                 </div>
 
-                <button class="btn-download" onclick="downloadCSVData()">📥 Download Data File (.CSV / Excel)</button>
+                <button class="btn-green" onclick="downloadCSVData()">📊 Download Data File (.CSV / Excel)</button>
 
-                <div class="form-box">
-                    <label style="font-size: 0.8rem; color: var(--text-muted);">Tanggal Data:</label>
-                    <input type="date" id="input-date">
-                    <input type="text" id="input-desc" placeholder="Keterangan / Job">
-                    <input type="number" id="input-amount" placeholder="Jumlah Nominal (Rp)">
-                    <button class="btn-action" onclick="addDataItem()">➕ Tambah Data</button>
+                <div class="form-card">
+                    <div class="form-group">
+                        <label>Tanggal Data:</label>
+                        <input type="date" id="input-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Keterangan / Job:</label>
+                        <input type="text" id="input-desc" class="form-control" placeholder="Contoh: Pembayaran Job / Beli barang">
+                    </div>
+                    <div class="form-group">
+                        <label>Jumlah Nominal (Rp):</label>
+                        <input type="number" id="input-amount" class="form-control" placeholder="0">
+                    </div>
+                    <button class="btn-primary" onclick="addDataItem()">➕ Tambah Data</button>
                 </div>
 
-                <div class="data-list-vertical" id="data-list-container"></div>
+                <div id="data-list-container"></div>
 
-                <div class="total-banner">
-                    Total: <span id="total-amount-val" style="color: var(--success);">Rp 0</span>
+                <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 10px; display: flex; justify-content: space-between; font-weight: bold;">
+                    <span>Total:</span>
+                    <span id="total-amount-val" style="color: var(--success);">Rp 0</span>
                 </div>
             </div>
 
+            <!-- PAGE: CALENDAR -->
+            <div id="page-calendar" class="page-view">
+                <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <button class="btn-back" onclick="changeMonth(-1)">◀</button>
+                    <h3 id="calendar-month-year">Bulan Tahun</h3>
+                    <button class="btn-back" onclick="changeMonth(1)">▶</button>
+                </div>
+                <div class="calendar-grid" id="calendar-days-container"></div>
+            </div>
+
+            <!-- PAGE: SETTINGS -->
             <div id="page-settings" class="page-view">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
-                    <h3 style="font-size: 1.1rem;">Pengaturan & Tema Admin</h3>
+                <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
+                <h3>Pengaturan Dashboard</h3>
+                <br>
+                <div class="form-card">
+                    <label>Pilih Varian Tema (50 Varian Feminim):</label>
+                    <div class="theme-grid" id="theme-grid"></div>
                 </div>
 
-                <div class="settings-card">
-                    <div>
-                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">1. Pilih Tema Cewe (50 Jenis):</h4>
-                        <div class="theme-grid-container" id="theme-grid"></div>
+                <div class="form-card">
+                    <div class="form-group">
+                        <label>URL Image Background Wallpaper:</label>
+                        <input type="text" id="wallpaper-url-input" class="form-control" placeholder="https://domain.com/gambar.jpg">
                     </div>
-
-                    <div style="border-top: 1px solid var(--glass-border); padding-top: 15px;">
-                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">2. Upload Wallpaper Galeri HP (Otomatis Disesuaikan):</label>
-                        <input type="file" id="wallpaper-file-input" accept="image/*" onchange="handleWallpaperUpload(event)" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.4); color:#fff; border:1px solid var(--glass-border);">
+                    <div class="form-group">
+                        <label>Atau Upload Wallpaper (Lokal):</label>
+                        <input type="file" id="wallpaper-file-input" class="form-control" accept="image/*" onchange="handleWallpaperUpload(event)">
                     </div>
-
-                    <div>
-                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">3. Atau Link / URL Gambar Wallpaper:</label>
-                        <input type="text" id="wallpaper-url-input" placeholder="https://..." style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.4); color:#fff; border:1px solid var(--glass-border);">
+                    <div class="form-group">
+                        <label>Kecerahan Gambar Wallpaper (%):</label>
+                        <input type="range" id="val-brightness" min="10" max="100" value="70" style="width: 100%;">
                     </div>
-
-                    <div>
-                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">4. Kecerahan Wallpaper (Brightness):</label>
-                        <input type="range" id="val-brightness" min="20" max="100" value="70" style="width: 100%;">
-                    </div>
-
-                    <button class="btn-action" onclick="confirmSaveSettings()" style="margin-top: 10px; background: linear-gradient(135deg, #00c853, #00e676); color:#000; font-size:1rem;">
-                        ✅ Klik Konfirmasi Perubahan Setting
-                    </button>
+                    <button class="btn-primary" onclick="confirmSaveSettings()">💾 Simpan Pengaturan</button>
                 </div>
             </div>
 
         </div>
     </div>
 
+    <!-- SCRIPT CLOUD PREMIER ENGINE (JSONBIN V3 + HYBRID LOCAL ENGINE) -->
     <script>
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "admin123";
 
         // JSONBin Cloud Credentials
-        const JSONBIN_BIN_ID = "6790b8f4e41b4d34e47cf7da";
+        const JSONBIN_BIN_ID = "6a9a2cdbf5f4af5e296817f7";
         const JSONBIN_API_KEY = "$2a$10$RToIDZQyfCwAmmFIgopn6O1Nf2lOWMZy5cE7zwXLMHjagMg0EP5I.";
+        const JSONBIN_ENDPOINT = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
         const FEMININE_THEMES = Array.from({ length: 50 }, (_, i) => {
             const hue = (i * 7.2) % 360;
@@ -439,6 +482,11 @@
             }
             document.getElementById('input-date').valueAsDate = new Date();
             startDashboardClock();
+            
+            // 1. Muat data lokal instan
+            loadLocalBackup();
+            
+            // 2. Tarik data terbaru dari Cloud JSONBin
             loadOnlineData();
         });
 
@@ -457,36 +505,70 @@
 
         function setSyncStatus(text, statusClass) {
             const el = document.getElementById('sync-indicator');
-            el.innerText = text;
-            el.className = `sync-badge ${statusClass}`;
+            if(el) {
+                el.innerText = text;
+                el.className = `sync-badge ${statusClass}`;
+            }
+        }
+
+        // ==========================================
+        // HYBRID STORAGE ENGINES
+        // ==========================================
+        function saveLocalBackup() {
+            localStorage.setItem('catatan_data_app_db_v2', JSON.stringify(appData));
+        }
+
+        function loadLocalBackup() {
+            const local = localStorage.getItem('catatan_data_app_db_v2');
+            if (local) {
+                try {
+                    appData = JSON.parse(local);
+                    tempSelectedThemeId = appData.settings.themeId || 1;
+                    applyThemeStyle();
+                    if (document.getElementById('page-data').classList.contains('active')) {
+                        renderCategoryView();
+                    }
+                } catch(e) {
+                    console.error("Format data lokal tidak valid", e);
+                }
+            }
         }
 
         async function loadOnlineData() {
-            setSyncStatus("⏳ Memuat Cloud...", "saving");
+            setSyncStatus("⏳ Sinkronisasi Cloud...", "saving");
             try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                const res = await fetch(`${JSONBIN_ENDPOINT}/latest`, {
+                    method: 'GET',
                     headers: { 'X-Master-Key': JSONBIN_API_KEY }
                 });
+
                 if (res.ok) {
                     const result = await res.json();
-                    if (result.record) {
+                    if (result.record && typeof result.record === 'object') {
                         appData = result.record;
+                        saveLocalBackup();
                         tempSelectedThemeId = appData.settings.themeId || 1;
                         applyThemeStyle();
+                        if (document.getElementById('page-data').classList.contains('active')) {
+                            renderCategoryView();
+                        }
                         setSyncStatus("🟢 Online Cloud", "saved");
                     }
                 } else {
-                    setSyncStatus("🔴 Offline (Gagal Load)", "error");
+                    setSyncStatus("🟡 Mode Lokal (Aman)", "saved");
                 }
             } catch (e) {
-                setSyncStatus("🔴 Offline (Error)", "error");
+                setSyncStatus("🟡 Mode Lokal (Aman)", "saved");
             }
         }
 
         async function saveOnlineData() {
-            setSyncStatus("⏳ Menyimpan Cloud...", "saving");
+            // Simpan instant ke Local Storage
+            saveLocalBackup();
+
+            setSyncStatus("⏳ Menyimpan...", "saving");
             try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                const res = await fetch(JSONBIN_ENDPOINT, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -494,16 +576,20 @@
                     },
                     body: JSON.stringify(appData)
                 });
+
                 if (res.ok) {
-                    setSyncStatus("🟢 Online Cloud", "saved");
+                    setSyncStatus("🟢 Tersimpan Online", "saved");
                 } else {
-                    setSyncStatus("🔴 Gagal Simpan", "error");
+                    setSyncStatus("🟡 Tersimpan di HP/Lokal", "saved");
                 }
             } catch (e) {
-                setSyncStatus("🔴 Gagal Simpan", "error");
+                setSyncStatus("🟡 Tersimpan di HP/Lokal", "saved");
             }
         }
 
+        // ==========================================
+        // AUTH & NAVIGATION
+        // ==========================================
         function login() {
             if (document.getElementById('username').value === ADMIN_USER && document.getElementById('password').value === ADMIN_PASS) {
                 localStorage.setItem('is_admin_logged_in', 'true');
@@ -540,6 +626,9 @@
             }
         }
 
+        // ==========================================
+        // THEME & SETTINGS
+        // ==========================================
         function renderThemeGrid() {
             const grid = document.getElementById('theme-grid');
             grid.innerHTML = '';
@@ -571,14 +660,14 @@
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    const maxW = 400; // Kompresi agar muat dalam payload JSON Cloud API
+                    const maxW = 350;
                     const scale = maxW / img.width;
                     canvas.width = maxW;
                     canvas.height = img.height * scale;
 
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    tempUploadedWallpaper = canvas.toDataURL('image/jpeg', 0.4);
-                    alert("Wallpaper dipilih! Tekan 'Klik Konfirmasi Perubahan Setting' untuk menyimpan ke Cloud.");
+                    tempUploadedWallpaper = canvas.toDataURL('image/jpeg', 0.3);
+                    alert("Wallpaper dipilih! Klik 'Simpan Pengaturan' untuk menerapkan.");
                 };
                 img.src = e.target.result;
             };
@@ -605,7 +694,7 @@
 
             applyThemeStyle();
             saveOnlineData();
-            alert("✅ Pengaturan Disimpan ke Cloud!");
+            alert("✅ Pengaturan Berhasil Disimpan!");
         }
 
         function applyThemeStyle() {
@@ -625,6 +714,9 @@
             }
         }
 
+        // ==========================================
+        // DATA MANIPULATION (ADD / DELETE / RENDER)
+        // ==========================================
         function addDataItem() {
             const date = document.getElementById('input-date').value;
             const desc = document.getElementById('input-desc').value.trim();
@@ -707,6 +799,9 @@
             document.body.removeChild(link);
         }
 
+        // ==========================================
+        // CALENDAR VIEW
+        // ==========================================
         function renderCalendarView() {
             const container = document.getElementById('calendar-days-container');
             const label = document.getElementById('calendar-month-year');
