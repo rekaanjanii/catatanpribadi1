@@ -2,118 +2,194 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIME ( BANG_EL ) - Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>REKA ANJANI - LUXURY FEMININE DASHBOARD ONLINE</title>
     <style>
         :root {
-            --bg-base: #150a12;
-            --accent-color: #ff75a0;
-            --accent-glow: rgba(255, 117, 160, 0.4);
-            --card-bg: rgba(38, 15, 30, 0.8);
+            --bg-base: #0f0a15;
+            --accent-color: #ff65a3;
+            --accent-glow: rgba(255, 101, 163, 0.45);
             --text-color: #ffffff;
-            --text-muted: #ffc2d4;
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-blur: 16px;
+            --text-muted: #e2b6d5;
             --success: #00ff88;
-            --danger: #ff5252;
+            --danger: #ff477e;
+            --card-bg: rgba(30, 18, 41, 0.75);
+            --glass-border: rgba(255, 182, 217, 0.25);
+            --glass-blur: 18px;
+            --wallpaper-brightness: 0.7;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-base); color: var(--text-color); min-height: 100vh; overflow-x: hidden; position: relative; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+        
+        body { 
+            background-color: var(--bg-base);
+            color: var(--text-color); 
+            height: 100vh; 
+            overflow: hidden; 
+            position: relative;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
 
-        /* Layer Wallpaper */
         #bg-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover; background-position: center; background-repeat: no-repeat;
-            z-index: -1; transition: opacity 0.3s;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            opacity: var(--wallpaper-brightness);
+            transition: background-image 0.5s ease, opacity 0.3s ease;
+            z-index: 1;
         }
 
-        /* Login Overlay */
+        .app-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
         #login-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            background: rgba(10, 5, 15, 0.92); backdrop-filter: blur(20px);
             display: flex; justify-content: center; align-items: center; z-index: 9999;
+            padding: 20px;
         }
         .login-box {
-            background: var(--card-bg); border: 1px solid var(--glass-border);
-            padding: 25px; border-radius: 20px; width: 90%; max-width: 360px;
-            text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            background: var(--card-bg); backdrop-filter: blur(25px);
+            border: 2px solid var(--accent-glow); padding: 35px 25px; border-radius: 24px; 
+            width: 100%; max-width: 360px; text-align: center;
+            box-shadow: 0 0 35px var(--accent-glow);
+            animation: pulseGlow 4s infinite alternate;
         }
-        .login-box h2 { margin-bottom: 15px; font-size: 1.3rem; color: #fff; }
+        .login-box h2 { margin-bottom: 20px; color: #fff; font-size: 1.5rem; letter-spacing: 1px; text-shadow: 0 0 10px var(--accent-color); }
         .login-box input {
-            width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px;
-            border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5);
-            color: #fff; outline: none; font-size: 0.9rem;
+            width: 100%; padding: 12px 15px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.6); color: #fff; outline: none; font-size: 0.95rem;
         }
         .login-box button {
-            width: 100%; padding: 12px; border-radius: 10px; border: none;
-            background: linear-gradient(135deg, var(--accent-color), #ff9ebb);
-            color: #fff; font-weight: bold; cursor: pointer; margin-top: 5px;
+            width: 100%; padding: 12px; margin-top: 15px; border: none; border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-color), #ff9ebb); color: #fff; font-weight: bold; cursor: pointer; font-size: 1rem;
+            box-shadow: 0 4px 18px var(--accent-glow); transition: 0.3s;
         }
 
-        /* Layout Utama */
-        .app-container { display: flex; flex-direction: column; min-height: 100vh; }
-        
         .top-navbar {
-            padding: 15px 20px; background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
-            border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .brand-title { font-size: 1.2rem; font-weight: bold; color: #fff; text-shadow: 0 0 12px var(--accent-color); }
-        .sync-badge { font-size: 0.75rem; padding: 5px 12px; border-radius: 20px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); font-weight: bold; }
+        .brand-title { font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; color: #fff; text-shadow: 0 0 12px var(--accent-color); }
+        
+        .sync-badge {
+            font-size: 0.75rem; padding: 5px 12px; border-radius: 20px;
+            background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);
+            font-weight: bold;
+        }
+        .sync-badge.saving { color: #ffc107; border-color: #ffc107; }
         .sync-badge.saved { color: var(--success); border-color: var(--success); }
+        .sync-badge.error { color: var(--danger); border-color: var(--danger); }
 
-        .content-body { flex: 1; padding: 20px; overflow-y: auto; position: relative; }
-
-        /* DASHBOARD HOMEPAGE GRID */
-        .dashboard-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px; max-width: 900px; margin: 0 auto; padding-bottom: 30px;
+        .content-body {
+            flex: 1; padding: 20px; overflow-y: auto; position: relative;
         }
-        .menu-card {
+
+        /* BANNER TANGGAL DASHBOARD */
+        .date-display-box {
             background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border); border-radius: 20px; padding: 22px 12px;
-            text-align: center; cursor: pointer; transition: all 0.3s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+            border: 1px solid var(--glass-border); border-radius: 16px;
+            padding: 12px 20px; text-align: center; max-width: 900px; margin: 0 auto 18px auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .menu-card:hover { transform: translateY(-50px) scale(1.03); border-color: var(--accent-color); }
-        .card-icon {
-            width: 52px; height: 52px; border-radius: 16px;
-            background: linear-gradient(135deg, rgba(255,101,163,0.3), rgba(255,182,217,0.5));
-            display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
-        }
-        .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; }
+        .date-day { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); }
+        .date-time { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
 
-        /* PAGE VIEWS */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 30px;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 22px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: floatCard 4s ease-in-out infinite;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 10px;
+        }
+
+        .menu-card:hover, .menu-card:active {
+            transform: translateY(-8px) scale(1.04);
+            border-color: var(--accent-color);
+            box-shadow: 0 12px 30px var(--accent-glow);
+            background: rgba(50, 25, 65, 0.85);
+        }
+
+        .card-icon {
+            width: 52px; height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255,101,163,0.3), rgba(255,182,217,0.5));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; letter-spacing: 0.5px; }
+
         .page-view { display: none; max-width: 800px; margin: 0 auto; width: 100%; }
         .page-view.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
         .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        
         .btn-back {
             background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border); color: #fff;
             padding: 8px 16px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; font-weight: bold;
+            display: flex; align-items: center; gap: 6px; backdrop-filter: blur(8px);
         }
 
-        /* KALENDER STYLING */
         .calendar-box {
             background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         }
         .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .calendar-controls button {
             background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: #fff;
             padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold;
         }
-        .month-year-label { font-size: 1.1rem; font-weight: bold; color: #fff; }
+        .month-year-label { font-size: 1.1rem; font-weight: bold; color: #fff; text-shadow: 0 0 8px var(--accent-color); }
+
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
         .day-header { font-weight: bold; font-size: 0.8rem; color: var(--text-muted); padding-bottom: 8px; }
         .calendar-day-cell {
-            background: rgba(0, 0, 0, 0.35); border: 1px solid var(--glass-border); border-radius: 12px;
-            aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 0.85rem; font-weight: bold; position: relative;
+            background: rgba(0, 0, 0, 0.35); border: 1px solid var(--glass-border);
+            border-radius: 12px; aspect-ratio: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold;
+            position: relative; transition: 0.3s;
         }
-        .calendar-day-cell.has-job { border-color: var(--success); background: rgba(0, 255, 136, 0.15); }
+        .calendar-day-cell.has-job {
+            border-color: var(--success); background: rgba(0, 255, 136, 0.12); box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
+        }
 
-        /* FORM INPUTS & ACTION BUTTONS */
+        .btn-download {
+            background: linear-gradient(135deg, #00c853, #64dd17); color: #fff; border: none;
+            padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; width: 100%;
+            box-shadow: 0 4px 14px rgba(0,200,83,0.3);
+        }
+
         .form-box {
             background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; margin-bottom: 20px;
@@ -126,14 +202,9 @@
         .btn-action {
             padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;
             background: linear-gradient(135deg, var(--accent-color), #ff9ebb); color: #fff; font-size: 0.9rem;
-        }
-        .btn-download {
-            background: linear-gradient(135deg, #00c853, #64dd17); color: #fff; border: none;
-            padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 15px;
+            box-shadow: 0 4px 14px var(--accent-glow);
         }
 
-        /* DATA LIST VERTIKAL */
         .data-list-vertical { display: flex; flex-direction: column; gap: 12px; }
         .data-card-item {
             background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
@@ -156,7 +227,6 @@
             font-size: 1.1rem; font-weight: bold;
         }
 
-        /* PENGATURAN TEMA (50 TEMA) */
         .settings-card {
             background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--glass-border); padding: 20px; border-radius: 18px;
@@ -170,21 +240,23 @@
             border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px;
             text-align: center; cursor: pointer; font-size: 0.75rem; font-weight: bold;
             display: flex; flex-direction: column; align-items: center; gap: 6px;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.4); transition: 0.3s;
         }
-        .theme-option-card.active { border-color: var(--accent-color); box-shadow: 0 0 10px var(--accent-glow); }
+        .theme-option-card.selected { border-color: var(--accent-color); box-shadow: 0 0 12px var(--accent-glow); }
         .theme-color-dots { display: flex; gap: 4px; }
         .color-dot { width: 14px; height: 14px; border-radius: 50%; }
 
+        @keyframes floatCard { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 15px var(--accent-glow); } 100% { box-shadow: 0 0 35px var(--accent-glow); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
         .hidden { display: none !important; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="bg-layer"></div>
 
-    <!-- Login Overlay -->
     <div id="login-overlay">
         <div class="login-box">
             <h2>LOGIN ADMIN</h2>
@@ -195,20 +267,25 @@
         </div>
     </div>
 
-    <!-- App Container -->
     <div class="app-container">
         <div class="top-navbar">
-            <div class="brand-title">TIME ( BANG_EL )</div>
-            <div id="sync-indicator" class="sync-badge saved">🟢 Sistem Siap</div>
+            <div class="brand-title">CATATAN DATA</div>
+            <div id="sync-indicator" class="sync-badge saving">⏳ Memuat...</div>
         </div>
 
         <div class="content-body">
 
-            <!-- DASHBOARD HOME -->
+            <!-- DASHBOARD UTAMA -->
             <div id="page-dashboard" class="page-view active">
-                <div style="text-align: center; margin-bottom: 22px;">
+                <div style="text-align: center; margin-bottom: 15px;">
                     <h2 style="font-size: 1.35rem; font-weight: 700;">Selamat Datang, Admin</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Pilih menu di bawah untuk mengelola data</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Pilih menu di bawah untuk mengelola data</p>
+                </div>
+
+                <!-- TAMPILAN TANGGAL & WAKTU REALTIME -->
+                <div class="date-display-box">
+                    <div class="date-day" id="dashboard-date-text">Selasa, 1 Januari 2026</div>
+                    <div class="date-time" id="dashboard-clock-text">Jam: 00:00:00 WIB</div>
                 </div>
 
                 <div class="dashboard-grid">
@@ -238,7 +315,7 @@
                     </div>
                     <div class="menu-card" onclick="navigateTo('settings')">
                         <div class="card-icon">🎀</div>
-                        <div class="card-title">Pengaturan (50 Tema)</div>
+                        <div class="card-title">Pengaturan Tema (50)</div>
                     </div>
                 </div>
 
@@ -247,7 +324,7 @@
                 </div>
             </div>
 
-            <!-- HALAMAN KALENDER JOB -->
+            <!-- HALAMAN KALENDER -->
             <div id="page-calendar" class="page-view">
                 <div class="page-header">
                     <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
@@ -275,26 +352,24 @@
                 </div>
             </div>
 
-            <!-- HALAMAN DINAMIS DATA TABEL -->
+            <!-- HALAMAN TABEL DATA -->
             <div id="page-data" class="page-view">
                 <div class="page-header">
                     <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
                     <h3 id="current-page-title" style="font-size: 1.1rem;">Tabel Data</h3>
                 </div>
 
-                <!-- Tombol Download Tabel ke File HP -->
-                <button class="btn-download" onclick="downloadCSV()">📥 Download Data Ke HP (.CSV / Excel)</button>
+                <!-- FITUR DOWNLOAD DATA KE HP -->
+                <button class="btn-download" onclick="downloadCSVData()">📥 Download Data File (.CSV / Excel)</button>
 
-                <!-- Form Input dengan Pilihan Tanggal -->
                 <div class="form-box">
-                    <label style="font-size: 0.8rem; color: var(--text-muted);">Pilih Tanggal Data:</label>
+                    <label style="font-size: 0.8rem; color: var(--text-muted);">Tanggal Data:</label>
                     <input type="date" id="input-date">
-                    <input type="text" id="input-desc" placeholder="Keterangan / Nama Kegiatan">
+                    <input type="text" id="input-desc" placeholder="Keterangan / Job">
                     <input type="number" id="input-amount" placeholder="Jumlah Nominal (Rp)">
-                    <button class="btn-action" onclick="addDataItem()">➕ Tambahkan Data</button>
+                    <button class="btn-action" onclick="addDataItem()">➕ Tambah Data</button>
                 </div>
 
-                <!-- List Data Vertikal -->
                 <div class="data-list-vertical" id="data-list-container"></div>
 
                 <div class="total-banner">
@@ -302,7 +377,7 @@
                 </div>
             </div>
 
-            <!-- HALAMAN PENGATURAN (50 TEMA & WALLPAPER) -->
+            <!-- HALAMAN PENGATURAN ADMIN -->
             <div id="page-settings" class="page-view">
                 <div class="page-header">
                     <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
@@ -311,26 +386,26 @@
 
                 <div class="settings-card">
                     <div>
-                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Pilih Tema (50 Varian Warna):</h4>
+                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">1. Pilih Tema Cewe (50 Jenis):</h4>
                         <div class="theme-grid-container" id="theme-grid"></div>
                     </div>
 
                     <div style="border-top: 1px solid var(--glass-border); padding-top: 15px;">
-                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">1. Unggah Wallpaper (Galeri HP):</label>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">2. Upload Wallpaper Galeri HP (Otomatis Disesuaikan):</label>
                         <input type="file" id="wallpaper-file-input" accept="image/*" onchange="handleWallpaperUpload(event)" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.4); color:#fff; border:1px solid var(--glass-border);">
                     </div>
 
                     <div>
-                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">2. Atau Pakai Link / URL Gambar:</label>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">3. Atau Link / URL Gambar Wallpaper:</label>
                         <input type="text" id="wallpaper-url-input" placeholder="https://..." style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.4); color:#fff; border:1px solid var(--glass-border);">
                     </div>
 
                     <div>
-                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">Kecerahan Wallpaper (Opacity / Brightness):</label>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">4. Kecerahan Wallpaper (Brightness):</label>
                         <input type="range" id="val-brightness" min="20" max="100" value="70" style="width: 100%;">
                     </div>
 
-                    <!-- TOMBOL KONFIRMASI SIMPAN SETTING -->
+                    <!-- TOMBOL KONFIRMASI PENGATURAN -->
                     <button class="btn-action" onclick="confirmSaveSettings()" style="margin-top: 10px; background: linear-gradient(135deg, #00c853, #00e676); color:#000; font-size:1rem;">
                         ✅ Klik Konfirmasi Perubahan Setting
                     </button>
@@ -344,12 +419,15 @@
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "admin123";
 
-        // ARRAY GENERATED 50 TEMA LENGKAP
+        const JSONBIN_BIN_ID = "6a97e858f5f4af5e296025b0";
+        const JSONBIN_API_KEY = "$2a$10$RToIDZQyfCwAmmFIgopn6O1Nf2lOWMZy5cE7zwXLMHjagMg0EP5I.";
+
+        // 50 TEMA CEWE FULL VARIATION
         const FEMININE_THEMES = Array.from({ length: 50 }, (_, i) => {
             const hue = (i * 7.2) % 360;
             return {
                 id: i + 1,
-                name: `Theme Variant ${i + 1}`,
+                name: `Tema Varian ${i + 1}`,
                 bg: `hsl(${hue}, 35%, 8%)`,
                 accent: `hsl(${hue}, 85%, 65%)`,
                 card: `hsla(${hue}, 30%, 15%, 0.8)`,
@@ -357,8 +435,10 @@
             };
         });
 
-        let tempUploadedWallpaper = ""; // Variabel Penampung Wallpaper Sebelum Konfirmasi
-        let appData = JSON.parse(localStorage.getItem('dashboard_app_data')) || {
+        let tempSelectedThemeId = 1;
+        let tempUploadedWallpaper = "";
+
+        let appData = {
             settings: { themeId: 1, wallpaper: "", brightness: 70 },
             pemasukkan: [],
             pengeluaran: [],
@@ -374,17 +454,90 @@
             if (localStorage.getItem('is_admin_logged_in') === 'true') {
                 document.getElementById('login-overlay').classList.add('hidden');
             }
-            // Set tanggal default input ke hari ini
             document.getElementById('input-date').valueAsDate = new Date();
-            applyThemeStyle();
+            startDashboardClock();
+            loadOnlineData();
         });
+
+        // WAKTU & TANGGAL REALTIME DASHBOARD
+        function startDashboardClock() {
+            function updateClock() {
+                const now = new Date();
+                const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                
+                const dayName = days[now.getDay()];
+                const dayNum = now.getDate();
+                const monthName = months[now.getMonth()];
+                const year = now.getFullYear();
+
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                document.getElementById('dashboard-date-text').innerText = `${dayName}, ${dayNum} ${monthName} ${year}`;
+                document.getElementById('dashboard-clock-text').innerText = `Jam: ${hours}:${minutes}:${seconds} WIB`;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        function setSyncStatus(text, statusClass) {
+            const el = document.getElementById('sync-indicator');
+            el.innerText = text;
+            el.className = `sync-badge ${statusClass}`;
+        }
+
+        async function loadOnlineData() {
+            setSyncStatus("⏳ Memuat...", "saving");
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
+                });
+                if (res.ok) {
+                    const result = await res.json();
+                    if (result.record) {
+                        appData = result.record;
+                        tempSelectedThemeId = appData.settings.themeId || 1;
+                        applyThemeStyle();
+                        setSyncStatus("🟢 Terhubung", "saved");
+                    }
+                } else {
+                    setSyncStatus("🔴 Offline", "error");
+                }
+            } catch (e) {
+                setSyncStatus("🔴 Offline", "error");
+            }
+        }
+
+        async function saveOnlineData() {
+            setSyncStatus("⏳ Menyimpan...", "saving");
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify(appData)
+                });
+                if (res.ok) {
+                    setSyncStatus("🟢 Tersimpan Online", "saved");
+                } else {
+                    setSyncStatus("🔴 Gagal Simpan", "error");
+                }
+            } catch (e) {
+                setSyncStatus("🔴 Offline", "error");
+            }
+        }
 
         function login() {
             if (document.getElementById('username').value === ADMIN_USER && document.getElementById('password').value === ADMIN_PASS) {
                 localStorage.setItem('is_admin_logged_in', 'true');
                 document.getElementById('login-overlay').classList.add('hidden');
+                loadOnlineData();
             } else {
-                document.getElementById('login-error').innerText = "Username atau Password Salah!";
+                document.getElementById('login-error').innerText = "Username/Password Salah!";
             }
         }
 
@@ -400,6 +553,7 @@
                 document.getElementById('page-dashboard').classList.add('active');
             } else if (targetPage === 'settings') {
                 document.getElementById('page-settings').classList.add('active');
+                tempSelectedThemeId = appData.settings.themeId || 1;
                 renderThemeGrid();
                 loadSettingsUI();
             } else if (targetPage === 'calendar') {
@@ -413,17 +567,15 @@
             }
         }
 
-        /* --- LOGIK PENGATURAN & TEMA (DENGAN KONFIRMASI) --- */
         function renderThemeGrid() {
             const grid = document.getElementById('theme-grid');
             grid.innerHTML = '';
             FEMININE_THEMES.forEach(t => {
                 const card = document.createElement('div');
-                card.className = `theme-option-card ${t.id === appData.settings.themeId ? 'active' : ''}`;
+                card.className = `theme-option-card ${t.id === tempSelectedThemeId ? 'selected' : ''}`;
                 card.onclick = () => {
-                    appData.settings.themeId = t.id;
+                    tempSelectedThemeId = t.id;
                     renderThemeGrid();
-                    applyThemeStyle();
                 };
                 card.innerHTML = `
                     <div class="theme-color-dots">
@@ -436,7 +588,7 @@
             });
         }
 
-        // Auto kompres gambar dari Galeri HP agar tidak corrupt / gagal simpan
+        // AUTO RESIZE GAMBAR GALERI AGAR TIDAK GAGAL UPLOAD
         function handleWallpaperUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -447,14 +599,14 @@
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    const maxW = 1080;
+                    const maxW = 800; // Resize resolusi agar tidak terlalu berat
                     const scale = maxW / img.width;
                     canvas.width = maxW;
                     canvas.height = img.height * scale;
 
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    tempUploadedWallpaper = canvas.toDataURL('image/jpeg', 0.7); // Kompresi otomatis
-                    alert("Gambar galeri berhasil diproses. Klik tombol KONFIRMASI di bawah untuk menerapkan.");
+                    tempUploadedWallpaper = canvas.toDataURL('image/jpeg', 0.6);
+                    alert("Gambar galeri disesuaikan! Klik tombol KONFIRMASI di bawah.");
                 };
                 img.src = e.target.result;
             };
@@ -467,10 +619,11 @@
             tempUploadedWallpaper = "";
         }
 
-        // KONFIRMASI TOMBOL SIMPAN PENGATURAN
+        // SIMPAN PENGATURAN SETELAH DIKONFIRMASI
         function confirmSaveSettings() {
+            appData.settings.themeId = tempSelectedThemeId;
             const urlInput = document.getElementById('wallpaper-url-input').value.trim();
-            
+
             if (tempUploadedWallpaper !== "") {
                 appData.settings.wallpaper = tempUploadedWallpaper;
             } else if (urlInput !== "") {
@@ -478,10 +631,10 @@
             }
 
             appData.settings.brightness = document.getElementById('val-brightness').value;
-            
-            saveToStorage();
+
             applyThemeStyle();
-            alert("✅ Pengaturan Dashboard Berhasil Diperbarui & Disimpan!");
+            saveOnlineData();
+            alert("✅ Pengaturan Berhasil Disimpan & Diperbarui!");
         }
 
         function applyThemeStyle() {
@@ -495,13 +648,12 @@
             const bgLayer = document.getElementById('bg-layer');
             if (appData.settings.wallpaper) {
                 bgLayer.style.backgroundImage = `url('${appData.settings.wallpaper}')`;
-                bgLayer.style.opacity = (appData.settings.brightness || 70) / 100;
+                bgLayer.style.setProperty('--wallpaper-brightness', (appData.settings.brightness || 70) / 100);
             } else {
                 bgLayer.style.backgroundImage = "none";
             }
         }
 
-        /* --- LOGIK DATA TABEL & TANGGAL --- */
         function addDataItem() {
             const date = document.getElementById('input-date').value;
             const desc = document.getElementById('input-desc').value.trim();
@@ -514,18 +666,18 @@
 
             const newItem = { id: Date.now(), date, desc, amount };
             appData[activeCategory].push(newItem);
-            
+
             document.getElementById('input-desc').value = '';
             document.getElementById('input-amount').value = '';
 
-            saveToStorage();
             renderCategoryView();
+            saveOnlineData();
         }
 
         function deleteDataItem(id) {
             appData[activeCategory] = appData[activeCategory].filter(x => x.id !== id);
-            saveToStorage();
             renderCategoryView();
+            saveOnlineData();
         }
 
         function renderCategoryView() {
@@ -554,8 +706,8 @@
             document.getElementById('total-amount-val').innerText = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
-        /* --- FITUR DOWNLOAD TABEL KE HP (FORMAT CSV) --- */
-        function downloadCSV() {
+        // FITUR DOWNLOAD TANGGAL & TABEL KE FILE CSV HP
+        function downloadCSVData() {
             const items = appData[activeCategory] || [];
             if (items.length === 0) {
                 alert("Tidak ada data untuk di-download!");
@@ -570,13 +722,12 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Data_${activeCategory.toUpperCase()}_BANG_EL.csv`);
+            link.setAttribute("download", `Data_${activeCategory.toUpperCase()}_ADMIN.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
-        /* --- KALENDER INTERAKTIF --- */
         function renderCalendarView() {
             const container = document.getElementById('calendar-days-container');
             const label = document.getElementById('calendar-month-year');
@@ -585,13 +736,12 @@
             const year = currentCalendarDate.getFullYear();
             const month = currentCalendarDate.getMonth();
             const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-            
+
             label.innerText = `${monthNames[month]} ${year}`;
 
             const firstDayIndex = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
-            // Kumpulkan tanggal job dari tabel 'jadwal' dan 'pemasukkan'
             const jobDates = new Set();
             [...(appData.jadwal || []), ...(appData.pemasukkan || [])].forEach(item => {
                 if (item.date) jobDates.add(item.date);
@@ -621,10 +771,6 @@
         function changeMonth(step) {
             currentCalendarDate.setMonth(currentCalendarDate.getMonth() + step);
             renderCalendarView();
-        }
-
-        function saveToStorage() {
-            localStorage.setItem('dashboard_app_data', JSON.stringify(appData));
         }
     </script>
 </body>
