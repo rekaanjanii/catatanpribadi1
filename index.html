@@ -734,6 +734,10 @@
                         <div style="color: var(--text-muted); font-size: 0.85rem;">Total Tabungan</div>
                         <div id="stat-tabungan" class="val" style="color: #ff65a3;">Rp 0</div>
                     </div>
+                    <div class="stat-card">
+                        <div style="color: var(--text-muted); font-size: 0.85rem;">Total Cicilan</div>
+                        <div id="stat-cicilan" class="val" style="color: #ff4e50;">Rp 0</div>
+                    </div>
                 </div>
 
                 <div class="menu-grid">
@@ -752,6 +756,10 @@
                     <button class="menu-btn" onclick="navigateTo('tabungan')">
                         <span class="icon">🐷</span>
                         <span>Tabungan</span>
+                    </button>
+                    <button class="menu-btn" onclick="navigateTo('cicilan')">
+                        <span class="icon">💳</span>
+                        <span>Cicilan</span>
                     </button>
                     <button class="menu-btn" onclick="navigateTo('persentase')">
                         <span class="icon">📊</span>
@@ -893,7 +901,7 @@
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "admin123";
 
-        const JSONBIN_BIN_ID = "6a9a3f91f5f4af5e296847b8";
+        const JSONBIN_BIN_ID = "6a9aab22da38895dfe381885";
         const JSONBIN_API_KEY = "$2a$10$RToIDZQyfCwAmmFIgopn6O1Nf2lOWMZy5cE7zwXLMHjagMg0EP5I.";
         const JSONBIN_ENDPOINT = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
@@ -913,9 +921,9 @@
         let tempUploadedWallpaper = "";
         let deleteTargetId = null;
 
-        // SKEMA JSON TERBARU + FITUR RUNNING TEXT
+        // SKEMA JSON TERBARU + FITUR CICILAN & RUNNING TEXT
         let appData = {
-            schemaVersion: "2.1",
+            schemaVersion: "2.2",
             settings: { 
                 themeId: 1, 
                 wallpaper: "", 
@@ -927,7 +935,8 @@
             jadwal: [],
             utang: [],
             simpanan: [],
-            tabungan: []
+            tabungan: [],
+            cicilan: []
         };
 
         let activeCategory = 'pemasukkan';
@@ -983,6 +992,7 @@
                 try {
                     const parsed = JSON.parse(local);
                     appData = { ...appData, ...parsed };
+                    if(!appData.cicilan) appData.cicilan = [];
                     if(!appData.settings) appData.settings = {};
                     if(!appData.settings.runningText) appData.settings.runningText = "Selamat Datang di Catatan Data Pribadi ~ Semangat Mencatat Keuangan Anda Setiap Hari! ✨";
                     
@@ -1012,6 +1022,7 @@
                     if (result.record && typeof result.record === 'object') {
                         appData = { ...appData, ...result.record };
                         if (!appData.tabungan) appData.tabungan = [];
+                        if (!appData.cicilan) appData.cicilan = [];
                         if (!appData.settings) appData.settings = {};
                         if (!appData.settings.runningText) appData.settings.runningText = "Selamat Datang di Catatan Data Pribadi ~ Semangat Mencatat Keuangan Anda Setiap Hari! ✨";
 
@@ -1063,6 +1074,7 @@
             document.getElementById('stat-pengeluaran').innerText = `Rp ${sumArr(appData.pengeluaran).toLocaleString('id-ID')}`;
             document.getElementById('stat-simpanan').innerText = `Rp ${sumArr(appData.simpanan).toLocaleString('id-ID')}`;
             document.getElementById('stat-tabungan').innerText = `Rp ${sumArr(appData.tabungan).toLocaleString('id-ID')}`;
+            document.getElementById('stat-cicilan').innerText = `Rp ${sumArr(appData.cicilan).toLocaleString('id-ID')}`;
         }
 
         function login() {
@@ -1115,14 +1127,16 @@
             const totalPengeluaran = sumArr(appData.pengeluaran);
             const totalSimpanan = sumArr(appData.simpanan);
             const totalTabungan = sumArr(appData.tabungan);
+            const totalCicilan = sumArr(appData.cicilan);
 
-            const totalGrand = totalPemasukkan + totalPengeluaran + totalSimpanan + totalTabungan || 1;
+            const totalGrand = totalPemasukkan + totalPengeluaran + totalSimpanan + totalTabungan + totalCicilan || 1;
 
             const items = [
                 { title: '💎 Pemasukkan', amount: totalPemasukkan, color: '#00f2fe' },
                 { title: '🛍️ Pengeluaran', amount: totalPengeluaran, color: '#ff4e50' },
                 { title: '👑 Simpanan', amount: totalSimpanan, color: '#ffd700' },
-                { title: '🐷 Tabungan', amount: totalTabungan, color: '#ff65a3' }
+                { title: '🐷 Tabungan', amount: totalTabungan, color: '#ff65a3' },
+                { title: '💳 Cicilan', amount: totalCicilan, color: '#ff4e50' }
             ];
 
             items.forEach(item => {
