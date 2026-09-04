@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catatan Data Premium Dashboard</title>
+    <title>Catatan Data Beautiful Dashboard</title>
     <style>
         :root {
-            --bg-base: #110d18;
-            --accent-color: #ff6b8b;
-            --accent-glow: rgba(255, 107, 139, 0.47);
-            --card-bg: rgba(35, 22, 45, 0.85);
-            --text-muted: #f3c2d8;
-            --success: #00ff88;
-            --danger: #ff4757;
-            --warning: #ffa500;
+            --bg-base: #1a0b1e;
+            --accent-color: #ff65a3;
+            --accent-secondary: #ff758c;
+            --accent-glow: rgba(255, 101, 163, 0.5);
+            --card-bg: rgba(30, 15, 38, 0.75);
+            --text-muted: #fcd1d7;
+            --success: #00f2fe;
+            --danger: #ff4e50;
+            --warning: #fbc531;
+            --gold-accent: #ffd700;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
@@ -32,6 +34,25 @@
             align-items: center;
             position: relative;
             overflow-x: hidden;
+        }
+
+        /* 3D ANIMATED BACKGROUND & PARTICLE MESH */
+        #bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(circle at 20% 20%, rgba(255, 117, 140, 0.25), transparent 40%),
+                        radial-gradient(circle at 80% 80%, rgba(120, 115, 245, 0.25), transparent 40%),
+                        radial-gradient(circle at 50% 50%, rgba(255, 101, 163, 0.15), transparent 60%);
+            animation: meshMove 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes meshMove {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(4deg); }
         }
 
         #bg-layer {
@@ -47,55 +68,66 @@
             transition: opacity 0.3s ease;
         }
 
+        /* CONTAINER 3D GLASS */
         .app-container {
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 900px;
+            max-width: 920px;
             min-height: 90vh;
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 182, 193, 0.25);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 
+                        inset 0 0 20px rgba(255, 105, 180, 0.15);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             margin: 20px;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
-        /* HEADER */
+        /* HEADER BEAUTIFUL */
         .app-header {
-            padding: 20px 25px;
-            background: rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 22px 30px;
+            background: rgba(15, 5, 20, 0.35);
+            border-bottom: 1px solid rgba(255, 182, 193, 0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .app-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            letter-spacing: 1px;
-            color: #fff;
-            text-shadow: 0 0 10px var(--accent-glow);
+            letter-spacing: 1.5px;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef, #a1c4fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255, 154, 158, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .sync-badge {
-            font-size: 0.75rem;
-            padding: 6px 12px;
+            font-size: 0.8rem;
+            padding: 6px 14px;
             border-radius: 20px;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-weight: 600;
+            backdrop-filter: blur(5px);
             transition: all 0.3s;
         }
-        .sync-badge.saved { border-color: var(--success); color: var(--success); }
+        .sync-badge.saved { border-color: var(--success); color: var(--success); box-shadow: 0 0 8px rgba(0,242,254,0.3); }
         .sync-badge.saving { border-color: var(--warning); color: var(--warning); }
         .sync-badge.error { border-color: var(--danger); color: var(--danger); }
 
-        /* BODY CONTENT */
+        /* BODY & PAGES */
         .app-body {
             flex: 1;
             padding: 25px;
@@ -104,204 +136,257 @@
 
         .page-view {
             display: none;
+            animation: fadeIn 0.4s ease-out forwards;
         }
         .page-view.active {
             display: block;
         }
 
-        /* DASHBOARD CLOCK & MENU */
-        .dashboard-hero {
-            text-align: center;
-            padding: 20px 0;
-            margin-bottom: 25px;
-        }
-        .dashboard-date {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-        }
-        .dashboard-clock {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--accent-color);
-            text-shadow: 0 0 15px var(--accent-glow);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
+        /* 3D HERO DYNAMIC CLOCK */
+        .dashboard-hero {
+            text-align: center;
+            padding: 25px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.15), rgba(138, 43, 226, 0.15));
+            border-radius: 22px;
+            border: 1px solid rgba(255, 192, 203, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .dashboard-hero:hover {
+            transform: translateZ(10px) rotateX(2deg) rotateY(-2deg);
+        }
+
+        .dashboard-date {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .dashboard-clock {
+            font-size: 2.3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff758c, #ff7eb3, #7272f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* MENU GRID 3D CARDS */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+            gap: 18px;
             margin-bottom: 20px;
         }
 
         .menu-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px 10px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 182, 193, 0.2);
+            padding: 22px 12px;
+            border-radius: 20px;
             color: #fff;
             font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+        .menu-btn span.icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+            transition: transform 0.3s ease;
         }
         .menu-btn:hover {
-            background: var(--accent-color);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px var(--accent-glow);
+            background: linear-gradient(135deg, var(--accent-color), #8a2be2);
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 25px var(--accent-glow);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        .menu-btn:hover span.icon {
+            transform: scale(1.2) rotate(8deg);
         }
 
-        /* FORM INPUTS & CARDS */
+        /* FORM INPUTS & LISTS */
         .form-card {
-            background: rgba(0, 0, 0, 0.25);
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 20px;
+            background: rgba(10, 5, 15, 0.4);
+            padding: 22px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 182, 193, 0.15);
+            margin-bottom: 22px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
         .form-group label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            font-weight: 500;
         }
         .form-control {
             width: 100%;
-            padding: 12px 15px;
+            padding: 13px 16px;
             background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border: 1px solid rgba(255, 182, 193, 0.2);
+            border-radius: 12px;
             color: #fff;
             outline: none;
+            font-size: 0.95rem;
+            transition: border 0.3s ease;
         }
         .form-control:focus {
             border-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .btn-primary {
             width: 100%;
-            padding: 12px;
-            background: var(--accent-color);
+            padding: 14px;
+            background: linear-gradient(45deg, #ff65a3, #ff758c);
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #fff;
             font-weight: bold;
+            font-size: 1rem;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 18px var(--accent-glow);
         }
         .btn-primary:hover {
-            opacity: 0.9;
-            box-shadow: 0 0 10px var(--accent-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--accent-glow);
         }
 
         .btn-green {
-            background: #2ed573;
+            background: linear-gradient(45deg, #11998e, #38ef7d);
             color: #fff;
             border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 12px 18px;
+            border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+            box-shadow: 0 6px 15px rgba(56, 239, 125, 0.3);
         }
 
         .data-card-item {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 12px 15px;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 182, 193, 0.15);
+            padding: 14px 18px;
+            border-radius: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            transition: transform 0.2s ease;
         }
-        .data-info .data-primary { font-weight: bold; font-size: 0.95rem; }
-        .data-info .data-secondary { font-size: 0.75rem; color: var(--text-muted); }
-        .data-amount { font-weight: bold; color: var(--success); }
+        .data-card-item:hover {
+            transform: translateX(4px);
+            background: rgba(255, 255, 255, 0.07);
+        }
+        .data-info .data-primary { font-weight: 600; font-size: 1rem; color: #fff; }
+        .data-info .data-secondary { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+        .data-amount { font-weight: 700; color: var(--success); font-size: 1.05rem; }
 
         .btn-delete {
-            background: var(--danger);
+            background: linear-gradient(45deg, #ff4e50, #f9d423);
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
             cursor: pointer;
         }
 
         .btn-back {
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 9px 18px;
+            border-radius: 10px;
             cursor: pointer;
-            margin-bottom: 15px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            transition: background 0.2s;
         }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.2); }
 
-        /* CALENDAR */
+        /* CALENDAR BEAUTIFUL */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 8px;
             margin-top: 15px;
         }
         .calendar-day-cell {
             background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            min-height: 50px;
-            padding: 5px;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            border: 1px solid rgba(255, 182, 193, 0.1);
+            min-height: 55px;
+            padding: 6px;
+            border-radius: 10px;
+            font-size: 0.85rem;
         }
         .calendar-day-cell.has-job {
-            border-color: var(--success);
-            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-color);
+            background: rgba(255, 101, 163, 0.2);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         /* THEME GRID */
         .theme-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 10px;
-            max-height: 200px;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+            max-height: 220px;
             overflow-y: auto;
             margin-top: 10px;
         }
         .theme-option-card {
             background: rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 12px;
             cursor: pointer;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+            transition: all 0.2s;
         }
         .theme-option-card.selected {
             border-color: var(--accent-color);
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 101, 163, 0.2);
+            box-shadow: 0 0 12px var(--accent-glow);
         }
         .theme-color-dots {
             display: flex;
             justify-content: center;
-            gap: 5px;
-            margin-bottom: 5px;
+            gap: 6px;
+            margin-bottom: 6px;
         }
-        .color-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .color-dot { width: 14px; height: 14px; border-radius: 50%; }
 
-        /* OVERLAY LOGIN */
+        /* OVERLAY LOGIN BEAUTIFUL */
         #login-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 5, 15, 0.95);
+            background: rgba(15, 5, 20, 0.95);
+            backdrop-filter: blur(25px);
             z-index: 100;
             display: flex;
             justify-content: center;
@@ -312,34 +397,44 @@
         #login-overlay.hidden { display: none; }
         .login-box {
             width: 100%;
-            max-width: 320px;
+            max-width: 340px;
             text-align: center;
+            background: rgba(30, 15, 38, 0.8);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
 <body>
 
+    <!-- 3D DYNAMIC MESH BACKGROUND -->
+    <div id="bg-mesh"></div>
     <div id="bg-layer"></div>
 
     <div class="app-container">
         <!-- LOGIN OVERLAY -->
         <div id="login-overlay">
             <div class="login-box">
-                <h2 style="margin-bottom: 20px; color: var(--accent-color);">ADMIN LOGIN</h2>
+                <div style="font-size: 2.5rem; margin-bottom: 10px;">👑</div>
+                <h2 style="margin-bottom: 20px; background: linear-gradient(45deg, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ADMIN BEAUTIFUL</h2>
                 <div class="form-group">
                     <input type="text" id="username" class="form-control" placeholder="Username">
                 </div>
                 <div class="form-group">
                     <input type="password" id="password" class="form-control" placeholder="Password">
                 </div>
-                <button class="btn-primary" onclick="login()">Masuk</button>
-                <div id="login-error" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px;"></div>
+                <button class="btn-primary" onclick="login()">✨ Masuk Dashboard</button>
+                <div id="login-error" style="color: var(--danger); font-size: 0.85rem; margin-top: 12px; font-weight: 600;"></div>
             </div>
         </div>
 
         <!-- HEADER -->
         <div class="app-header">
-            <div class="app-title">CATATAN DATA</div>
+            <div class="app-title">
+                <span>💖</span> CATATAN DATA
+            </div>
             <div id="sync-indicator" class="sync-badge saving">⏳ Memuat Cloud...</div>
         </div>
 
@@ -354,46 +449,70 @@
                 </div>
 
                 <div class="menu-grid">
-                    <button class="menu-btn" onclick="navigateTo('pemasukkan')">📥 Pemasukkan</button>
-                    <button class="menu-btn" onclick="navigateTo('pengeluaran')">📤 Pengeluaran</button>
-                    <button class="menu-btn" onclick="navigateTo('jadwal')">📅 Jadwal</button>
-                    <button class="menu-btn" onclick="navigateTo('utang')">💳 Utang / Piutang</button>
-                    <button class="menu-btn" onclick="navigateTo('simpanan')">🏦 Simpanan</button>
-                    <button class="menu-btn" onclick="navigateTo('calendar')">🗓️ Kalender</button>
-                    <button class="menu-btn" onclick="navigateTo('settings')">⚙️ Pengaturan</button>
-                    <button class="menu-btn" onclick="logout()" style="border-color: var(--danger);">🔒 Keluar</button>
+                    <button class="menu-btn" onclick="navigateTo('pemasukkan')">
+                        <span class="icon">💎</span>
+                        <span>Pemasukkan</span>
+                    </button>
+                    <button class="menu-btn" onclick="navigateTo('pengeluaran')">
+                        <span class="icon">🛍️</span>
+                        <span>Pengeluaran</span>
+                    </button>
+                    <button class="menu-btn" onclick="navigateTo('jadwal')">
+                        <span class="icon">🌸</span>
+                        <span>Jadwal</span>
+                    </button>
+                    <button class="menu-btn" onclick="navigateTo('utang')">
+                        <span class="icon">🎀</span>
+                        <span>Utang / Piutang</span>
+                    </button>
+                    <button class="menu-btn" onclick="navigateTo('simpanan')">
+                        <span class="icon">👑</span>
+                        <span>Simpanan</span>
+                    </button>
+                    <button class="menu-btn" onclick="navigateTo('calendar')">
+                        <span class="icon">🗓️</span>
+                        <span>Kalender</span>
+                    </button>
+                    <button class="menu-btn" onclick="navigateTo('settings')">
+                        <span class="icon">✨</span>
+                        <span>Pengaturan</span>
+                    </button>
+                    <button class="menu-btn" onclick="logout()" style="border-color: rgba(255, 78, 80, 0.4);">
+                        <span class="icon">🔒</span>
+                        <span>Keluar</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- PAGE: DATA VIEWER (SHARED FOR CATEGORIES) -->
+            <!-- PAGE: DATA VIEWER -->
             <div id="page-data" class="page-view">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
-                    <div id="current-page-title" style="font-weight: bold; text-transform: uppercase;">Tabel Data</div>
+                    <div id="current-page-title" style="font-weight: 700; text-transform: uppercase; color: var(--accent-color);">Tabel Data</div>
                 </div>
 
-                <button class="btn-green" onclick="downloadCSVData()">📊 Download Data File (.CSV / Excel)</button>
+                <button class="btn-green" onclick="downloadCSVData()">📊 Download Data (.CSV / Excel)</button>
 
                 <div class="form-card">
                     <div class="form-group">
-                        <label>Tanggal Data:</label>
+                        <label>📅 Tanggal Data:</label>
                         <input type="date" id="input-date" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label>Keterangan / Job:</label>
-                        <input type="text" id="input-desc" class="form-control" placeholder="Contoh: Pembayaran Job / Beli barang">
+                        <label>📝 Keterangan / Job:</label>
+                        <input type="text" id="input-desc" class="form-control" placeholder="Contoh: Pembayaran Job / Beli kosmetik">
                     </div>
                     <div class="form-group">
-                        <label>Jumlah Nominal (Rp):</label>
+                        <label>💰 Jumlah Nominal (Rp):</label>
                         <input type="number" id="input-amount" class="form-control" placeholder="0">
                     </div>
-                    <button class="btn-primary" onclick="addDataItem()">➕ Tambah Data</button>
+                    <button class="btn-primary" onclick="addDataItem()">➕ Simpan Data Baru</button>
                 </div>
 
                 <div id="data-list-container"></div>
 
-                <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 10px; display: flex; justify-content: space-between; font-weight: bold;">
-                    <span>Total:</span>
+                <div style="margin-top: 18px; padding: 18px; background: rgba(0,0,0,0.4); border-radius: 14px; display: flex; justify-content: space-between; font-weight: bold; border: 1px solid rgba(255,182,193,0.2);">
+                    <span>Total Keseluruhan:</span>
                     <span id="total-amount-val" style="color: var(--success);">Rp 0</span>
                 </div>
             </div>
@@ -401,10 +520,10 @@
             <!-- PAGE: CALENDAR -->
             <div id="page-calendar" class="page-view">
                 <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <button class="btn-back" onclick="changeMonth(-1)">◀</button>
-                    <h3 id="calendar-month-year">Bulan Tahun</h3>
-                    <button class="btn-back" onclick="changeMonth(1)">▶</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <button class="btn-back" onclick="changeMonth(-1)" style="margin:0;">◀</button>
+                    <h3 id="calendar-month-year" style="color: var(--accent-color);">Bulan Tahun</h3>
+                    <button class="btn-back" onclick="changeMonth(1)" style="margin:0;">▶</button>
                 </div>
                 <div class="calendar-grid" id="calendar-days-container"></div>
             </div>
@@ -412,10 +531,10 @@
             <!-- PAGE: SETTINGS -->
             <div id="page-settings" class="page-view">
                 <button class="btn-back" onclick="navigateTo('dashboard')">← Kembali</button>
-                <h3>Pengaturan Dashboard</h3>
-                <br>
+                <h3 style="color: var(--accent-color); margin-bottom: 15px;">Pengaturan Dashboard</h3>
+                
                 <div class="form-card">
-                    <label>Pilih Varian Tema (50 Varian Feminim):</label>
+                    <label>Pilih Varian Tema Beautiful (50 Varian Feminim):</label>
                     <div class="theme-grid" id="theme-grid"></div>
                 </div>
 
@@ -439,13 +558,13 @@
         </div>
     </div>
 
-    <!-- SCRIPT CLOUD PREMIER ENGINE (JSONBIN V3 + HYBRID LOCAL ENGINE) -->
+    <!-- SCRIPT CLOUD HYBRID ENGINE V3 -->
     <script>
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "admin123";
 
         // JSONBin Cloud Credentials
-        const JSONBIN_BIN_ID = "6a9a2cdbf5f4af5e296817f7";
+        const JSONBIN_BIN_ID = "6a9a2f36f5f4af5e29681e6f";
         const JSONBIN_API_KEY = "$2a$10$RToIDZQyfCwAmmFIgopn6O1Nf2lOWMZy5cE7zwXLMHjagMg0EP5I.";
         const JSONBIN_ENDPOINT = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
@@ -454,10 +573,10 @@
             return {
                 id: i + 1,
                 name: `Tema Varian ${i + 1}`,
-                bg: `hsl(${hue}, 35%, 8%)`,
-                accent: `hsl(${hue}, 85%, 65%)`,
-                card: `hsla(${hue}, 30%, 15%, 0.85)`,
-                textMuted: `hsl(${hue}, 70%, 85%)`
+                bg: `hsl(${hue}, 40%, 10%)`,
+                accent: `hsl(${hue}, 90%, 68%)`,
+                card: `hsla(${hue}, 35%, 15%, 0.78)`,
+                textMuted: `hsl(${hue}, 80%, 88%)`
             };
         });
 
@@ -483,10 +602,7 @@
             document.getElementById('input-date').valueAsDate = new Date();
             startDashboardClock();
             
-            // 1. Muat data lokal instan
             loadLocalBackup();
-            
-            // 2. Tarik data terbaru dari Cloud JSONBin
             loadOnlineData();
         });
 
@@ -511,9 +627,6 @@
             }
         }
 
-        // ==========================================
-        // HYBRID STORAGE ENGINES
-        // ==========================================
         function saveLocalBackup() {
             localStorage.setItem('catatan_data_app_db_v2', JSON.stringify(appData));
         }
@@ -563,9 +676,7 @@
         }
 
         async function saveOnlineData() {
-            // Simpan instant ke Local Storage
             saveLocalBackup();
-
             setSyncStatus("⏳ Menyimpan...", "saving");
             try {
                 const res = await fetch(JSONBIN_ENDPOINT, {
@@ -587,9 +698,6 @@
             }
         }
 
-        // ==========================================
-        // AUTH & NAVIGATION
-        // ==========================================
         function login() {
             if (document.getElementById('username').value === ADMIN_USER && document.getElementById('password').value === ADMIN_PASS) {
                 localStorage.setItem('is_admin_logged_in', 'true');
@@ -626,9 +734,6 @@
             }
         }
 
-        // ==========================================
-        // THEME & SETTINGS
-        // ==========================================
         function renderThemeGrid() {
             const grid = document.getElementById('theme-grid');
             grid.innerHTML = '';
@@ -714,9 +819,6 @@
             }
         }
 
-        // ==========================================
-        // DATA MANIPULATION (ADD / DELETE / RENDER)
-        // ==========================================
         function addDataItem() {
             const date = document.getElementById('input-date').value;
             const desc = document.getElementById('input-desc').value.trim();
@@ -755,7 +857,7 @@
             const items = appData[activeCategory] || [];
 
             if (items.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.9rem;">Belum ada data untuk kategori ini.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding: 25px; color: var(--text-muted); font-size: 0.95rem;">Belum ada data untuk kategori ini.</div>`;
             } else {
                 items.forEach(item => {
                     total += item.amount;
@@ -793,15 +895,12 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Data_${activeCategory.toUpperCase()}_ADMIN.csv`);
+            link.setAttribute("download", `Data_${activeCategory.toUpperCase()}_BEAUTIFUL.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
-        // ==========================================
-        // CALENDAR VIEW
-        // ==========================================
         function renderCalendarView() {
             const container = document.getElementById('calendar-days-container');
             const label = document.getElementById('calendar-month-year');
@@ -836,7 +935,7 @@
 
                 if (jobDates.has(dayString)) {
                     cell.classList.add('has-job');
-                    cell.innerHTML += `<span style="font-size:0.65rem; color:var(--success);">✓ Job</span>`;
+                    cell.innerHTML += `<span style="font-size:0.65rem; color:var(--accent-color); display:block; margin-top:2px;">✨ Job</span>`;
                 }
                 container.appendChild(cell);
             }
