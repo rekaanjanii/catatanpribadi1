@@ -3,495 +3,628 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIME (BANG_EL) - Luxury Dashboard</title>
+    <title>TIME ( BANG_EL ) - Admin Dashboard</title>
     <style>
         :root {
-            --bg-color: #0b0e14;
-            --card-bg: rgba(22, 27, 34, 0.85);
-            --accent-color: #00d2ff;
+            --bg-base: #150a12;
+            --accent-color: #ff75a0;
+            --accent-glow: rgba(255, 117, 160, 0.4);
+            --card-bg: rgba(38, 15, 30, 0.8);
             --text-color: #ffffff;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --bg-image: none;
+            --text-muted: #ffc2d4;
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-blur: 16px;
+            --success: #00ff88;
+            --danger: #ff5252;
         }
 
-        /* 50 Variasi Tema Warna Presets */
-        .theme-1 { --accent-color: #00d2ff; --card-bg: rgba(22, 27, 34, 0.85); }
-        .theme-2 { --accent-color: #ff0055; --card-bg: rgba(35, 10, 20, 0.85); }
-        .theme-3 { --accent-color: #00ff88; --card-bg: rgba(5, 30, 15, 0.85); }
-        .theme-4 { --accent-color: #ffaa00; --card-bg: rgba(30, 20, 5, 0.85); }
-        .theme-5 { --accent-color: #9d00ff; --card-bg: rgba(20, 5, 30, 0.85); }
-        .theme-6 { --accent-color: #ff00aa; --card-bg: rgba(30, 5, 20, 0.85); }
-        .theme-7 { --accent-color: #00ffff; --card-bg: rgba(5, 25, 30, 0.85); }
-        .theme-8 { --accent-color: #ff3300; --card-bg: rgba(30, 10, 5, 0.85); }
-        .theme-9 { --accent-color: #33ff00; --card-bg: rgba(10, 30, 5, 0.85); }
-        .theme-10 { --accent-color: #e6c200; --card-bg: rgba(25, 22, 5, 0.85); }
-        .theme-11 { --accent-color: #a855f7; --card-bg: rgba(24, 15, 38, 0.85); }
-        .theme-12 { --accent-color: #ec4899; --card-bg: rgba(38, 15, 27, 0.85); }
-        .theme-13 { --accent-color: #3b82f6; --card-bg: rgba(15, 23, 42, 0.85); }
-        .theme-14 { --accent-color: #10b981; --card-bg: rgba(6, 30, 22, 0.85); }
-        .theme-15 { --accent-color: #f59e0b; --card-bg: rgba(35, 23, 9, 0.85); }
-        .theme-16 { --accent-color: #ef4444; --card-bg: rgba(36, 13, 13, 0.85); }
-        .theme-17 { --accent-color: #8b5cf6; --card-bg: rgba(22, 16, 38, 0.85); }
-        .theme-18 { --accent-color: #06b6d4; --card-bg: rgba(8, 28, 33, 0.85); }
-        .theme-19 { --accent-color: #84cc16; --card-bg: rgba(20, 31, 8, 0.85); }
-        .theme-20 { --accent-color: #f97316; --card-bg: rgba(36, 18, 9, 0.85); }
-        .theme-21 { --accent-color: #d946ef; --card-bg: rgba(33, 12, 36, 0.85); }
-        .theme-22 { --accent-color: #14b8a6; --card-bg: rgba(7, 28, 26, 0.85); }
-        .theme-23 { --accent-color: #6366f1; --card-bg: rgba(16, 17, 38, 0.85); }
-        .theme-24 { --accent-color: #eab308; --card-bg: rgba(33, 26, 7, 0.85); }
-        .theme-25 { --accent-color: #f43f5e; --card-bg: rgba(36, 12, 17, 0.85); }
-        .theme-26 { --accent-color: #0284c7; --card-bg: rgba(7, 23, 33, 0.85); }
-        .theme-27 { --accent-color: #059669; --card-bg: rgba(6, 26, 19, 0.85); }
-        .theme-28 { --accent-color: #d97706; --card-bg: rgba(31, 19, 6, 0.85); }
-        .theme-29 { --accent-color: #dc2626; --card-bg: rgba(33, 10, 10, 0.85); }
-        .theme-30 { --accent-color: #7c3aed; --card-bg: rgba(20, 11, 36, 0.85); }
-        .theme-31 { --accent-color: #0d9488; --card-bg: rgba(6, 26, 24, 0.85); }
-        .theme-32 { --accent-color: #2563eb; --card-bg: rgba(10, 19, 36, 0.85); }
-        .theme-33 { --accent-color: #ca8a04; --card-bg: rgba(28, 21, 6, 0.85); }
-        .theme-34 { --accent-color: #e11d48; --card-bg: rgba(33, 8, 14, 0.85); }
-        .theme-35 { --accent-color: #9333ea; --card-bg: rgba(23, 9, 36, 0.85); }
-        .theme-36 { --accent-color: #0891b2; --card-bg: rgba(6, 24, 28, 0.85); }
-        .theme-37 { --accent-color: #65a30d; --card-bg: rgba(17, 26, 6, 0.85); }
-        .theme-38 { --accent-color: #ea580c; --card-bg: rgba(33, 15, 6, 0.85); }
-        .theme-39 { --accent-color: #c026d3; --card-bg: rgba(28, 8, 31, 0.85); }
-        .theme-40 { --accent-color: #4f46e5; --card-bg: rgba(14, 13, 36, 0.85); }
-        .theme-41 { --accent-color: #16a34a; --card-bg: rgba(8, 26, 14, 0.85); }
-        .theme-42 { --accent-color: #b45309; --card-bg: rgba(26, 14, 6, 0.85); }
-        .theme-43 { --accent-color: #b91c1c; --card-bg: rgba(28, 8, 8, 0.85); }
-        .theme-44 { --accent-color: #6d28d9; --card-bg: rgba(18, 8, 33, 0.85); }
-        .theme-45 { --accent-color: #0f766e; --card-bg: rgba(6, 21, 20, 0.85); }
-        .theme-46 { --accent-color: #1d4ed8; --card-bg: rgba(8, 16, 31, 0.85); }
-        .theme-47 { --accent-color: #a16207; --card-bg: rgba(23, 15, 5, 0.85); }
-        .theme-48 { --accent-color: #be123c; --card-bg: rgba(28, 6, 11, 0.85); }
-        .theme-49 { --accent-color: #5b21b6; --card-bg: rgba(15, 6, 28, 0.85); }
-        .theme-50 { --accent-color: #ffffff; --card-bg: rgba(30, 30, 30, 0.85); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-base); color: var(--text-color); min-height: 100vh; overflow-x: hidden; position: relative; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-family);
+        /* Layer Wallpaper */
+        #bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            z-index: -1; transition: opacity 0.3s;
         }
 
-        body {
-            background-color: var(--bg-color);
-            background-image: var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: var(--text-color);
-            min-height: 100vh;
-            padding: 20px;
-            transition: all 0.3s ease;
+        /* Login Overlay */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center; z-index: 9999;
+        }
+        .login-box {
+            background: var(--card-bg); border: 1px solid var(--glass-border);
+            padding: 25px; border-radius: 20px; width: 90%; max-width: 360px;
+            text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+        .login-box h2 { margin-bottom: 15px; font-size: 1.3rem; color: #fff; }
+        .login-box input {
+            width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px;
+            border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5);
+            color: #fff; outline: none; font-size: 0.9rem;
+        }
+        .login-box button {
+            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            background: linear-gradient(135deg, var(--accent-color), #ff9ebb);
+            color: #fff; font-weight: bold; cursor: pointer; margin-top: 5px;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 25px;
-            background: var(--card-bg);
-            border-radius: 15px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        /* Layout Utama */
+        .app-container { display: flex; flex-direction: column; min-height: 100vh; }
+        
+        .top-navbar {
+            padding: 15px 20px; background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center;
+        }
+        .brand-title { font-size: 1.2rem; font-weight: bold; color: #fff; text-shadow: 0 0 12px var(--accent-color); }
+        .sync-badge { font-size: 0.75rem; padding: 5px 12px; border-radius: 20px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); font-weight: bold; }
+        .sync-badge.saved { color: var(--success); border-color: var(--success); }
+
+        .content-body { flex: 1; padding: 20px; overflow-y: auto; position: relative; }
+
+        /* DASHBOARD HOMEPAGE GRID */
+        .dashboard-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px; max-width: 900px; margin: 0 auto; padding-bottom: 30px;
+        }
+        .menu-card {
+            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 22px 12px;
+            text-align: center; cursor: pointer; transition: all 0.3s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+        }
+        .menu-card:hover { transform: translateY(-50px) scale(1.03); border-color: var(--accent-color); }
+        .card-icon {
+            width: 52px; height: 52px; border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255,101,163,0.3), rgba(255,182,217,0.5));
+            display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+        }
+        .card-title { font-size: 0.9rem; font-weight: 600; color: #fff; }
+
+        /* PAGE VIEWS */
+        .page-view { display: none; max-width: 800px; margin: 0 auto; width: 100%; }
+        .page-view.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        .btn-back {
+            background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border); color: #fff;
+            padding: 8px 16px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; font-weight: bold;
         }
 
-        .header h1 {
-            font-size: 24px;
-            color: var(--accent-color);
-            text-shadow: 0 0 10px var(--accent-color);
-            letter-spacing: 2px;
+        /* KALENDER STYLING */
+        .calendar-box {
+            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
         }
-
-        .btn {
-            background: linear-gradient(135deg, var(--accent-color), #0055ff);
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .calendar-controls button {
+            background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: #fff;
+            padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold;
         }
-
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        .month-year-label { font-size: 1.1rem; font-weight: bold; color: #fff; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+        .day-header { font-weight: bold; font-size: 0.8rem; color: var(--text-muted); padding-bottom: 8px; }
+        .calendar-day-cell {
+            background: rgba(0, 0, 0, 0.35); border: 1px solid var(--glass-border); border-radius: 12px;
+            aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: bold; position: relative;
         }
+        .calendar-day-cell.has-job { border-color: var(--success); background: rgba(0, 255, 136, 0.15); }
 
+        /* FORM INPUTS & ACTION BUTTONS */
+        .form-box {
+            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; margin-bottom: 20px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .form-box input, .form-box select {
+            padding: 12px; border-radius: 10px; border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.5); color: #fff; outline: none; font-size: 0.9rem;
+        }
+        .btn-action {
+            padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;
+            background: linear-gradient(135deg, var(--accent-color), #ff9ebb); color: #fff; font-size: 0.9rem;
+        }
         .btn-download {
-            background: #10b981;
-            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00c853, #64dd17); color: #fff; border: none;
+            padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 15px;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
+        /* DATA LIST VERTIKAL */
+        .data-list-vertical { display: flex; flex-direction: column; gap: 12px; }
+        .data-card-item {
+            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px 16px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .data-info { display: flex; flex-direction: column; gap: 4px; }
+        .data-primary { font-weight: bold; font-size: 0.95rem; color: #fff; }
+        .data-secondary { font-size: 0.8rem; color: var(--text-muted); }
+        .data-amount { font-weight: bold; color: var(--success); font-size: 0.95rem; }
+
+        .btn-delete {
+            background: var(--danger); border: none; color: #fff; padding: 6px 12px;
+            border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer;
         }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        .total-banner {
+            margin-top: 20px; padding: 15px; background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border); border-radius: 14px; text-align: right;
+            font-size: 1.1rem; font-weight: bold;
         }
 
-        .card h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--accent-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
+        /* PENGATURAN TEMA (50 TEMA) */
+        .settings-card {
+            background: var(--card-bg); backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border); padding: 20px; border-radius: 18px;
+            display: flex; flex-direction: column; gap: 18px;
         }
+        .theme-grid-container {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px; max-height: 250px; overflow-y: auto; padding-right: 5px;
+        }
+        .theme-option-card {
+            border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px;
+            text-align: center; cursor: pointer; font-size: 0.75rem; font-weight: bold;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            background: rgba(0,0,0,0.4);
+        }
+        .theme-option-card.active { border-color: var(--accent-color); box-shadow: 0 0 10px var(--accent-glow); }
+        .theme-color-dots { display: flex; gap: 4px; }
+        .color-dot { width: 14px; height: 14px; border-radius: 50%; }
 
-        /* Styling Tabel */
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 14px;
-        }
-
-        th {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--accent-color);
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #161b22;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 25px;
-            border: 1px solid var(--accent-color);
-            box-shadow: 0 0 20px var(--accent-color);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background: #0d1117;
-            color: #fff;
-        }
-
-        /* Preview Canvas Pengompres Gambar */
-        #canvasPreview {
-            display: none;
-        }
+        .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="theme-1">
+<body>
 
-    <div class="header">
-        <h1>TIME (BANG_EL)</h1>
-        <button class="btn" onclick="openModal('settingsModal')">⚙️ Pengaturan Admin</button>
-    </div>
+    <div id="bg-layer"></div>
 
-    <!-- Modul Tabel Keuangan -->
-    <div class="grid-container">
-        
-        <!-- Table Pemasukan -->
-        <div class="card">
-            <h2>📥 Table Pemasukan</h2>
-            <button class="btn btn-download" onclick="downloadCSV('tablePemasukan', 'Pemasukan')">📥 Download Tabel</button>
-            <div class="table-responsive">
-                <table id="tablePemasukan">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Keterangan</th>
-                            <th>Jumlah</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>2026-09-01</td><td>Gaji Bulanan</td><td>Rp 10.000.000</td></tr>
-                        <tr><td>2026-09-03</td><td>Bonus Proyek</td><td>Rp 2.500.000</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Table Pengeluaran -->
-        <div class="card">
-            <h2>📤 Table Pengeluaran</h2>
-            <button class="btn btn-download" onclick="downloadCSV('tablePengeluaran', 'Pengeluaran')">📥 Download Tabel</button>
-            <div class="table-responsive">
-                <table id="tablePengeluaran">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Keterangan</th>
-                            <th>Jumlah</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>2026-09-02</td><td>Belanja Bulanan</td><td>Rp 1.500.000</td></tr>
-                        <tr><td>2026-09-04</td><td>Bayar Listrik & Air</td><td>Rp 450.000</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Utang / Piutang -->
-        <div class="card">
-            <h2>⚖️ Utang / Piutang</h2>
-            <button class="btn btn-download" onclick="downloadCSV('tableUtang', 'Utang_Piutang')">📥 Download Tabel</button>
-            <div class="table-responsive">
-                <table id="tableUtang">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Nama</th>
-                            <th>Jenis</th>
-                            <th>Jumlah</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>2026-08-15</td><td>Budi</td><td>Piutang</td><td>Rp 500.000</td></tr>
-                        <tr><td>2026-08-20</td><td>Toko A</td><td>Utang</td><td>Rp 200.000</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Rekapan Data Simpanan -->
-        <div class="card">
-            <h2>💰 Rekapan Data Simpanan</h2>
-            <button class="btn btn-download" onclick="downloadCSV('tableSimpanan', 'Rekapan_Simpanan')">📥 Download Tabel</button>
-            <div class="table-responsive">
-                <table id="tableSimpanan">
-                    <thead>
-                        <tr>
-                            <th>Tanggal Update</th>
-                            <th>Akun / Bank</th>
-                            <th>Total Saldo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>2026-09-04</td><td>Bank BCA</td><td>Rp 15.000.000</td></tr>
-                        <tr><td>2026-09-04</td><td>E-Wallet</td><td>Rp 2.000.000</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Modal Pengaturan Admin -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <h2>⚙️ Pengaturan Admin</h2>
-            <br>
-            
-            <!-- 1. Pilihan Tema 50 Jenis -->
-            <div class="form-group">
-                <label>1. Pilih Tema Dashboard (50 Pilihan):</label>
-                <select id="themeSelect"></select>
-            </div>
-
-            <!-- 2. Wallpaper dari Galeri HP (Otomatis Disesuaikan) -->
-            <div class="form-group">
-                <label>2. Upload Wallpaper dari Galeri HP:</label>
-                <input type="file" id="bgUpload" accept="image/*">
-            </div>
-
-            <!-- 3. Wallpaper dari Link/URL -->
-            <div class="form-group">
-                <label>3. Wallpaper dari URL / Link Gambar:</label>
-                <input type="text" id="bgUrl" placeholder="https://example.com/gambar.jpg">
-            </div>
-
-            <!-- 4. Warna Kustom Dashboard -->
-            <div class="form-group">
-                <label>4. Warna Aksen Dashboard:</label>
-                <input type="color" id="accentColorPicker" value="#00d2ff">
-            </div>
-
-            <br>
-            <!-- Tombol Konfirmasi -->
-            <button class="btn" style="width: 100%;" onclick="openModal('confirmModal')">💾 Simpan Perubahan</button>
-            <br><br>
-            <button class="btn" style="width: 100%; background: #555;" onclick="closeModal('settingsModal')">Batal</button>
+    <!-- Login Overlay -->
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>LOGIN ADMIN</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()">MASUK DASHBOARD</button>
+            <p id="login-error" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px;"></p>
         </div>
     </div>
 
-    <!-- Modal Konfirmasi -->
-    <div id="confirmModal" class="modal">
-        <div class="modal-content" style="text-align: center;">
-            <h2>⚠️ Konfirmasi Perubahan</h2>
-            <p style="margin: 15px 0;">Apakah Anda yakin ingin menerapkan dan menyimpan semua pengaturan ini?</p>
-            <button class="btn" onclick="applySettings()" style="margin-right: 10px;">Ya, Terapkan</button>
-            <button class="btn" style="background: #ff0055;" onclick="closeModal('confirmModal')">Batal</button>
+    <!-- App Container -->
+    <div class="app-container">
+        <div class="top-navbar">
+            <div class="brand-title">TIME ( BANG_EL )</div>
+            <div id="sync-indicator" class="sync-badge saved">🟢 Sistem Siap</div>
+        </div>
+
+        <div class="content-body">
+
+            <!-- DASHBOARD HOME -->
+            <div id="page-dashboard" class="page-view active">
+                <div style="text-align: center; margin-bottom: 22px;">
+                    <h2 style="font-size: 1.35rem; font-weight: 700;">Selamat Datang, Admin</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Pilih menu di bawah untuk mengelola data</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="menu-card" onclick="navigateTo('pemasukkan')">
+                        <div class="card-icon">💰</div>
+                        <div class="card-title">Tabel Pemasukkan</div>
+                    </div>
+                    <div class="menu-card" onclick="navigateTo('pengeluaran')">
+                        <div class="card-icon">💸</div>
+                        <div class="card-title">Tabel Pengeluaran</div>
+                    </div>
+                    <div class="menu-card" onclick="navigateTo('jadwal')">
+                        <div class="card-icon">📝</div>
+                        <div class="card-title">Jadwal Job</div>
+                    </div>
+                    <div class="menu-card" onclick="navigateTo('calendar')">
+                        <div class="card-icon">📅</div>
+                        <div class="card-title">Kalender Job</div>
+                    </div>
+                    <div class="menu-card" onclick="navigateTo('utang')">
+                        <div class="card-icon">🤝</div>
+                        <div class="card-title">Utang / Piutang</div>
+                    </div>
+                    <div class="menu-card" onclick="navigateTo('simpanan')">
+                        <div class="card-icon">🏦</div>
+                        <div class="card-title">Data Simpanan</div>
+                    </div>
+                    <div class="menu-card" onclick="navigateTo('settings')">
+                        <div class="card-icon">🎀</div>
+                        <div class="card-title">Pengaturan (50 Tema)</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 10px;">
+                    <button onclick="logout()" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 20px; border-radius: 12px; font-weight: bold; cursor: pointer;">Logout Admin</button>
+                </div>
+            </div>
+
+            <!-- HALAMAN KALENDER JOB -->
+            <div id="page-calendar" class="page-view">
+                <div class="page-header">
+                    <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
+                    <h3 style="font-size: 1.1rem;">Kalender Job Terisi</h3>
+                </div>
+
+                <div class="calendar-box">
+                    <div class="calendar-controls">
+                        <button onclick="changeMonth(-1)">◀ Prev</button>
+                        <div class="month-year-label" id="calendar-month-year">Januari 2026</div>
+                        <button onclick="changeMonth(1)">Next ▶</button>
+                    </div>
+
+                    <div class="calendar-grid">
+                        <div class="day-header">Min</div>
+                        <div class="day-header">Sen</div>
+                        <div class="day-header">Sel</div>
+                        <div class="day-header">Rab</div>
+                        <div class="day-header">Kam</div>
+                        <div class="day-header">Jum</div>
+                        <div class="day-header">Sab</div>
+                    </div>
+
+                    <div class="calendar-grid" id="calendar-days-container" style="margin-top: 5px;"></div>
+                </div>
+            </div>
+
+            <!-- HALAMAN DINAMIS DATA TABEL -->
+            <div id="page-data" class="page-view">
+                <div class="page-header">
+                    <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
+                    <h3 id="current-page-title" style="font-size: 1.1rem;">Tabel Data</h3>
+                </div>
+
+                <!-- Tombol Download Tabel ke File HP -->
+                <button class="btn-download" onclick="downloadCSV()">📥 Download Data Ke HP (.CSV / Excel)</button>
+
+                <!-- Form Input dengan Pilihan Tanggal -->
+                <div class="form-box">
+                    <label style="font-size: 0.8rem; color: var(--text-muted);">Pilih Tanggal Data:</label>
+                    <input type="date" id="input-date">
+                    <input type="text" id="input-desc" placeholder="Keterangan / Nama Kegiatan">
+                    <input type="number" id="input-amount" placeholder="Jumlah Nominal (Rp)">
+                    <button class="btn-action" onclick="addDataItem()">➕ Tambahkan Data</button>
+                </div>
+
+                <!-- List Data Vertikal -->
+                <div class="data-list-vertical" id="data-list-container"></div>
+
+                <div class="total-banner">
+                    Total: <span id="total-amount-val" style="color: var(--success);">Rp 0</span>
+                </div>
+            </div>
+
+            <!-- HALAMAN PENGATURAN (50 TEMA & WALLPAPER) -->
+            <div id="page-settings" class="page-view">
+                <div class="page-header">
+                    <button class="btn-back" onclick="navigateTo('dashboard')">⬅ Kembali</button>
+                    <h3 style="font-size: 1.1rem;">Pengaturan & Tema Admin</h3>
+                </div>
+
+                <div class="settings-card">
+                    <div>
+                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Pilih Tema (50 Varian Warna):</h4>
+                        <div class="theme-grid-container" id="theme-grid"></div>
+                    </div>
+
+                    <div style="border-top: 1px solid var(--glass-border); padding-top: 15px;">
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">1. Unggah Wallpaper (Galeri HP):</label>
+                        <input type="file" id="wallpaper-file-input" accept="image/*" onchange="handleWallpaperUpload(event)" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.4); color:#fff; border:1px solid var(--glass-border);">
+                    </div>
+
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">2. Atau Pakai Link / URL Gambar:</label>
+                        <input type="text" id="wallpaper-url-input" placeholder="https://..." style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.4); color:#fff; border:1px solid var(--glass-border);">
+                    </div>
+
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display:block; margin-bottom: 6px;">Kecerahan Wallpaper (Opacity / Brightness):</label>
+                        <input type="range" id="val-brightness" min="20" max="100" value="70" style="width: 100%;">
+                    </div>
+
+                    <!-- TOMBOL KONFIRMASI SIMPAN SETTING -->
+                    <button class="btn-action" onclick="confirmSaveSettings()" style="margin-top: 10px; background: linear-gradient(135deg, #00c853, #00e676); color:#000; font-size:1rem;">
+                        ✅ Klik Konfirmasi Perubahan Setting
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <canvas id="canvasPreview"></canvas>
 
     <script>
-        // Generate 50 Pilihan Tema
-        const themeSelect = document.getElementById('themeSelect');
-        for (let i = 1; i <= 50; i++) {
-            let option = document.createElement('option');
-            option.value = `theme-${i}`;
-            option.textContent = `Tema Mewah Style ${i}`;
-            themeSelect.appendChild(option);
-        }
+        const ADMIN_USER = "admin";
+        const ADMIN_PASS = "admin123";
 
-        // Variabel Penyimpan sementara untuk file upload
-        let uploadedBgData = "";
-
-        // Mengompres & menyesuaikan ukuran gambar galeri otomatis agar tidak gagal
-        document.getElementById('bgUpload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.getElementById('canvasPreview');
-                        const ctx = canvas.getContext('2d');
-                        
-                        // Menyesuaikan ukuran gambar max 1280px (Optimal HP & Web)
-                        const MAX_WIDTH = 1280;
-                        const MAX_HEIGHT = 720;
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
-                        } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
-                            }
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        // Simpan sebagai DataURL ringan (JPEG Quality 0.7)
-                        uploadedBgData = canvas.toDataURL('image/jpeg', 0.7);
-                    }
-                    img.src = event.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
+        // ARRAY GENERATED 50 TEMA LENGKAP
+        const FEMININE_THEMES = Array.from({ length: 50 }, (_, i) => {
+            const hue = (i * 7.2) % 360;
+            return {
+                id: i + 1,
+                name: `Theme Variant ${i + 1}`,
+                bg: `hsl(${hue}, 35%, 8%)`,
+                accent: `hsl(${hue}, 85%, 65%)`,
+                card: `hsla(${hue}, 30%, 15%, 0.8)`,
+                textMuted: `hsl(${hue}, 70%, 85%)`
+            };
         });
 
-        // Modal Function
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
+        let tempUploadedWallpaper = ""; // Variabel Penampung Wallpaper Sebelum Konfirmasi
+        let appData = JSON.parse(localStorage.getItem('dashboard_app_data')) || {
+            settings: { themeId: 1, wallpaper: "", brightness: 70 },
+            pemasukkan: [],
+            pengeluaran: [],
+            jadwal: [],
+            utang: [],
+            simpanan: []
+        };
+
+        let activeCategory = 'pemasukkan';
+        let currentCalendarDate = new Date();
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('is_admin_logged_in') === 'true') {
+                document.getElementById('login-overlay').classList.add('hidden');
+            }
+            // Set tanggal default input ke hari ini
+            document.getElementById('input-date').valueAsDate = new Date();
+            applyThemeStyle();
+        });
+
+        function login() {
+            if (document.getElementById('username').value === ADMIN_USER && document.getElementById('password').value === ADMIN_PASS) {
+                localStorage.setItem('is_admin_logged_in', 'true');
+                document.getElementById('login-overlay').classList.add('hidden');
+            } else {
+                document.getElementById('login-error').innerText = "Username atau Password Salah!";
+            }
         }
 
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
+        function logout() {
+            localStorage.removeItem('is_admin_logged_in');
+            document.getElementById('login-overlay').classList.remove('hidden');
         }
 
-        // Eksekusi Konfirmasi & Terapkan Pengaturan
-        function applySettings() {
-            const selectedTheme = document.getElementById('themeSelect').value;
-            const bgUrl = document.getElementById('bgUrl').value;
-            const customColor = document.getElementById('accentColorPicker').value;
+        function navigateTo(targetPage) {
+            document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
 
-            // 1. Ganti Tema
-            document.body.className = selectedTheme;
+            if (targetPage === 'dashboard') {
+                document.getElementById('page-dashboard').classList.add('active');
+            } else if (targetPage === 'settings') {
+                document.getElementById('page-settings').classList.add('active');
+                renderThemeGrid();
+                loadSettingsUI();
+            } else if (targetPage === 'calendar') {
+                document.getElementById('page-calendar').classList.add('active');
+                renderCalendarView();
+            } else {
+                activeCategory = targetPage;
+                document.getElementById('page-data').classList.add('active');
+                document.getElementById('current-page-title').innerText = "Tabel " + targetPage.toUpperCase();
+                renderCategoryView();
+            }
+        }
 
-            // 2 & 3. Gambar Wallpaper (Prioritas: Upload Galeri -> Link URL)
-            if (uploadedBgData !== "") {
-                document.body.style.setProperty('--bg-image', `url('${uploadedBgData}')`);
-            } else if (bgUrl.trim() !== "") {
-                document.body.style.setProperty('--bg-image', `url('${bgUrl}')`);
+        /* --- LOGIK PENGATURAN & TEMA (DENGAN KONFIRMASI) --- */
+        function renderThemeGrid() {
+            const grid = document.getElementById('theme-grid');
+            grid.innerHTML = '';
+            FEMININE_THEMES.forEach(t => {
+                const card = document.createElement('div');
+                card.className = `theme-option-card ${t.id === appData.settings.themeId ? 'active' : ''}`;
+                card.onclick = () => {
+                    appData.settings.themeId = t.id;
+                    renderThemeGrid();
+                    applyThemeStyle();
+                };
+                card.innerHTML = `
+                    <div class="theme-color-dots">
+                        <div class="color-dot" style="background:${t.accent};"></div>
+                        <div class="color-dot" style="background:${t.card}; border:1px solid #fff;"></div>
+                    </div>
+                    <div>#${t.id} ${t.name}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Auto kompres gambar dari Galeri HP agar tidak corrupt / gagal simpan
+        function handleWallpaperUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const maxW = 1080;
+                    const scale = maxW / img.width;
+                    canvas.width = maxW;
+                    canvas.height = img.height * scale;
+
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    tempUploadedWallpaper = canvas.toDataURL('image/jpeg', 0.7); // Kompresi otomatis
+                    alert("Gambar galeri berhasil diproses. Klik tombol KONFIRMASI di bawah untuk menerapkan.");
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadSettingsUI() {
+            document.getElementById('wallpaper-url-input').value = appData.settings.wallpaper.startsWith('data:') ? '' : appData.settings.wallpaper;
+            document.getElementById('val-brightness').value = appData.settings.brightness || 70;
+            tempUploadedWallpaper = "";
+        }
+
+        // KONFIRMASI TOMBOL SIMPAN PENGATURAN
+        function confirmSaveSettings() {
+            const urlInput = document.getElementById('wallpaper-url-input').value.trim();
+            
+            if (tempUploadedWallpaper !== "") {
+                appData.settings.wallpaper = tempUploadedWallpaper;
+            } else if (urlInput !== "") {
+                appData.settings.wallpaper = urlInput;
             }
 
-            // 4. Warna Aksen Kustom
-            if (customColor) {
-                document.documentElement.style.setProperty('--accent-color', customColor);
-            }
-
-            // Tutup semua modal
-            closeModal('confirmModal');
-            closeModal('settingsModal');
-
-            alert('Pengaturan berhasil diperbarui!');
+            appData.settings.brightness = document.getElementById('val-brightness').value;
+            
+            saveToStorage();
+            applyThemeStyle();
+            alert("✅ Pengaturan Dashboard Berhasil Diperbarui & Disimpan!");
         }
 
-        // Fitur Download Tabel Ke CSV (Otomatis tersimpan di HP)
-        function downloadCSV(tableId, title) {
-            const table = document.getElementById(tableId);
-            let csv = [];
-            const rows = table.querySelectorAll("tr");
+        function applyThemeStyle() {
+            const t = FEMININE_THEMES.find(x => x.id === (appData.settings.themeId || 1)) || FEMININE_THEMES[0];
+            document.documentElement.style.setProperty('--bg-base', t.bg);
+            document.documentElement.style.setProperty('--accent-color', t.accent);
+            document.documentElement.style.setProperty('--accent-glow', `${t.accent}77`);
+            document.documentElement.style.setProperty('--card-bg', t.card);
+            document.documentElement.style.setProperty('--text-muted', t.textMuted);
 
-            for (let i = 0; i < rows.length; i++) {
-                const row = [], cols = rows[i].querySelectorAll("td, th");
-                for (let j = 0; j < cols.length; j++) {
-                    row.push('"' + cols[j].innerText + '"');
+            const bgLayer = document.getElementById('bg-layer');
+            if (appData.settings.wallpaper) {
+                bgLayer.style.backgroundImage = `url('${appData.settings.wallpaper}')`;
+                bgLayer.style.opacity = (appData.settings.brightness || 70) / 100;
+            } else {
+                bgLayer.style.backgroundImage = "none";
+            }
+        }
+
+        /* --- LOGIK DATA TABEL & TANGGAL --- */
+        function addDataItem() {
+            const date = document.getElementById('input-date').value;
+            const desc = document.getElementById('input-desc').value.trim();
+            const amount = parseFloat(document.getElementById('input-amount').value) || 0;
+
+            if (!date || !desc) {
+                alert("Harap isi tanggal dan keterangan!");
+                return;
+            }
+
+            const newItem = { id: Date.now(), date, desc, amount };
+            appData[activeCategory].push(newItem);
+            
+            document.getElementById('input-desc').value = '';
+            document.getElementById('input-amount').value = '';
+
+            saveToStorage();
+            renderCategoryView();
+        }
+
+        function deleteDataItem(id) {
+            appData[activeCategory] = appData[activeCategory].filter(x => x.id !== id);
+            saveToStorage();
+            renderCategoryView();
+        }
+
+        function renderCategoryView() {
+            const container = document.getElementById('data-list-container');
+            container.innerHTML = '';
+            let total = 0;
+
+            const items = appData[activeCategory] || [];
+            items.forEach(item => {
+                total += item.amount;
+                const card = document.createElement('div');
+                card.className = 'data-card-item';
+                card.innerHTML = `
+                    <div class="data-info">
+                        <div class="data-primary">${item.desc}</div>
+                        <div class="data-secondary">📅 ${item.date}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div class="data-amount">Rp ${item.amount.toLocaleString('id-ID')}</div>
+                        <button class="btn-delete" onclick="deleteDataItem(${item.id})">Hapus</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('total-amount-val').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        /* --- FITUR DOWNLOAD TABEL KE HP (FORMAT CSV) --- */
+        function downloadCSV() {
+            const items = appData[activeCategory] || [];
+            if (items.length === 0) {
+                alert("Tidak ada data untuk di-download!");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Tanggal,Keterangan,Nominal\n";
+            items.forEach(row => {
+                csvContent += `"${row.date}","${row.desc}","${row.amount}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Data_${activeCategory.toUpperCase()}_BANG_EL.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        /* --- KALENDER INTERAKTIF --- */
+        function renderCalendarView() {
+            const container = document.getElementById('calendar-days-container');
+            const label = document.getElementById('calendar-month-year');
+            container.innerHTML = '';
+
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            
+            label.innerText = `${monthNames[month]} ${year}`;
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Kumpulkan tanggal job dari tabel 'jadwal' dan 'pemasukkan'
+            const jobDates = new Set();
+            [...(appData.jadwal || []), ...(appData.pemasukkan || [])].forEach(item => {
+                if (item.date) jobDates.add(item.date);
+            });
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day-cell';
+                emptyCell.style.border = 'none';
+                container.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= totalDays; day++) {
+                const dayString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const cell = document.createElement('div');
+                cell.className = 'calendar-day-cell';
+                cell.innerText = day;
+
+                if (jobDates.has(dayString)) {
+                    cell.classList.add('has-job');
+                    cell.innerHTML += `<span style="font-size:0.65rem; color:var(--success);">✓ Job</span>`;
                 }
-                csv.push(row.join(","));
+                container.appendChild(cell);
             }
+        }
 
-            const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
-            const downloadLink = document.createElement("a");
-            
-            // Nama file otomatis dengan tanggal
-            const today = new Date().toISOString().slice(0, 10);
-            downloadLink.download = `${title}_${today}.csv`;
-            downloadLink.href = window.URL.createObjectURL(csvFile);
-            downloadLink.style.display = "none";
-            
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+        function changeMonth(step) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + step);
+            renderCalendarView();
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('dashboard_app_data', JSON.stringify(appData));
         }
     </script>
 </body>
